@@ -42,6 +42,7 @@ struct TestPrivate : CppUnit::TestFixture {
         address_t startAddr = &x.a[0];
         sentinel_t spaceNeeded = sizeof(T);
         address_t p = x.allocAndSplit(startAddr, spaceNeeded);
+        CPPUNIT_ASSERT(x.valid());
 
         CPPUNIT_ASSERT(reinterpret_cast<address_t>(&x.a[SENT_BYTES]) == p);
 
@@ -57,12 +58,16 @@ struct TestPrivate : CppUnit::TestFixture {
         CPPUNIT_ASSERT(expected == footer);
         CPPUNIT_ASSERT(next_header == freeBlockSize);
         CPPUNIT_ASSERT(*(INT_P(&x.a[N-SENT_BYTES])) == freeBlockSize);
+
+        x.deallocate(reinterpret_cast<T*>(p), 1);
+        CPPUNIT_ASSERT(x.valid());
     }
 
     void test_allocBlock() {
         Allocator<T, N> x;
         address_t startAddr = &x.a[0];
         address_t p = x.allocBlock(startAddr);
+        CPPUNIT_ASSERT(x.valid());
 
         CPPUNIT_ASSERT(reinterpret_cast<address_t>(&x.a[SENT_BYTES]) == p);
 
@@ -72,6 +77,9 @@ struct TestPrivate : CppUnit::TestFixture {
 
         CPPUNIT_ASSERT(expected == header);
         CPPUNIT_ASSERT(expected == footer);
+
+        x.deallocate(reinterpret_cast<T*>(p), 1);
+        CPPUNIT_ASSERT(x.valid());
     }
 
 CPPUNIT_TEST_SUITE(TestPrivate);
@@ -114,9 +122,12 @@ struct TestAllocator : CppUnit::TestFixture {
      */
     void test_allocate_1() {
         A x;
-        x.allocate(1);
-        x.allocate(2);
-        x.allocate(3);
+        pointer p1 = x.allocate(1);
+        pointer p2 = x.allocate(2);
+        pointer p3 = x.allocate(3);
+        x.deallocate(p1, 1);
+        x.deallocate(p2, 2);
+        x.deallocate(p3, 3);
     }
 
     /**
@@ -124,7 +135,8 @@ struct TestAllocator : CppUnit::TestFixture {
      */
     void test_allocate_2() {
         A x;
-        x.allocate(0);
+        pointer p0 = x.allocate(0);
+        x.deallocate(p0, 0);
     }
 
     /**
@@ -132,7 +144,8 @@ struct TestAllocator : CppUnit::TestFixture {
      */
     void test_allocate_3() {
         A x;
-        x.allocate(11);
+        pointer p = x.allocate(11);
+        x.deallocate(p, 0);
     }
 
     /**
@@ -171,11 +184,16 @@ struct TestAllocator : CppUnit::TestFixture {
      */
     void test_deallocate_1() {
         A x;
-        x.allocate(1);
-        pointer p = x.allocate(1);
-        *p = 42;
-        x.allocate(2);
-        x.deallocate(p, 1);  // special case: deallocating the first block
+        pointer p1 = x.allocate(1);
+        pointer p2 = x.allocate(1);
+        *p1 = 42;
+        pointer p3 = x.allocate(2);
+
+        x.deallocate(p1, 1);  // special case: deallocating the first block
+
+        // free the rest of the memory
+        x.deallocate(p2, 1);
+        x.deallocate(p3, 2);
     }
 
     /**
@@ -184,12 +202,17 @@ struct TestAllocator : CppUnit::TestFixture {
      */
     void test_deallocate_2() {
         A x;
-        x.allocate(1);  // leave this one busy
+        pointer p1 = x.allocate(1);  // leave this one busy
         pointer p2 = x.allocate(1);
         pointer p3 = x.allocate(2);
-        x.allocate(1);  // leave this one busy
+        pointer p4 = x.allocate(1);  // leave this one busy
+
         x.deallocate(p2, 1);
         x.deallocate(p3, 2);
+
+        // free the rest of the memory
+        x.deallocate(p1, 1);
+        x.deallocate(p4, 1);
     }
 
     /**
@@ -198,13 +221,19 @@ struct TestAllocator : CppUnit::TestFixture {
      */
     void test_deallocate_3() {
         A x;
-        x.allocate(1);  // leave this one busy
-        x.allocate(1);
+        pointer p1 = x.allocate(1);  // leave this one busy
+        pointer p2 = x.allocate(1);
         pointer p3 = x.allocate(1);
         pointer p4 = x.allocate(2);
-        x.allocate(1);  // leave this one busy
+        pointer p5 = x.allocate(1);  // leave this one busy
+
         x.deallocate(p4, 2);
         x.deallocate(p3, 1);
+
+        // free the rest of the memory
+        x.deallocate(p1, 1);
+        x.deallocate(p2, 1);
+        x.deallocate(p5, 1);
     }
 
     /**
@@ -213,14 +242,19 @@ struct TestAllocator : CppUnit::TestFixture {
      */
     void test_deallocate_4() {
         A x;
-        x.allocate(1);  // leave this one busy
+        pointer p1 = x.allocate(1);  // leave this one busy
         pointer p2 = x.allocate(1);
         pointer p3 = x.allocate(2);
         pointer p4 = x.allocate(1);
-        x.allocate(1);  // leave this one busy
+        pointer p5 = x.allocate(1);  // leave this one busy
+
         x.deallocate(p4, 1);
         x.deallocate(p2, 1);
         x.deallocate(p3, 2);
+
+        // free the rest of the memory
+        x.deallocate(p1, 1);
+        x.deallocate(p5, 1);
     }
 
     /**
@@ -230,13 +264,19 @@ struct TestAllocator : CppUnit::TestFixture {
      */
     void test_deallocate_5() {
         A x;
-        x.allocate(1);
+        pointer p1 = x.allocate(1);
         pointer p2 = x.allocate(1);
-        x.allocate(1);
+        pointer p3 = x.allocate(1);
         pointer p4 = x.allocate(2);
-        x.allocate(1);
+        pointer p5 = x.allocate(1);
+
         x.deallocate(p2, 1);
         x.deallocate(p4, 2);
+
+        // free the rest of the memory
+        x.deallocate(p1, 1);
+        x.deallocate(p3, 1);
+        x.deallocate(p5, 1);
     }
 
     /**
@@ -248,8 +288,11 @@ struct TestAllocator : CppUnit::TestFixture {
         A x;
         pointer p = x.allocate(1);
         *p = 42;
-        x.allocate(1);
+        pointer q = x.allocate(1);
         x.deallocate(p, 1);  // special case: deallocating the first block
+
+        // free the rest of the memory
+        x.deallocate(q, 1);
     }
 
     /**
@@ -259,9 +302,12 @@ struct TestAllocator : CppUnit::TestFixture {
      */
     void test_deallocate_7() {
         A x;
-        x.allocate(1);
+        pointer p1 = x.allocate(1);
         pointer p2 = x.allocate(9);
         x.deallocate(p2, 9);
+
+        // free the rest of the memory
+        x.deallocate(p1, 1);
     }
 
     /**
@@ -329,7 +375,7 @@ struct TestAllocator : CppUnit::TestFixture {
 CPPUNIT_TEST_SUITE(TestAllocator);
         CPPUNIT_TEST(test_constructor);
         CPPUNIT_TEST(test_allocate_1);
-        CPPUNIT_TEST(test_allocate_2);
+        CPPUNIT_TEST(test_allocate_2);  // allocate 0
         CPPUNIT_TEST(test_allocate_3);
         CPPUNIT_TEST(test_allocate_4);
         CPPUNIT_TEST(test_allocate_5);
@@ -365,15 +411,6 @@ int main() {
 
     tr.addTest(TestPrivate<int, 100>::suite());
     tr.addTest(TestPrivate<double, 100>::suite());
-
-    /*
-    tr.addTest(TestAllocator<std::allocator<Elephant> >::suite());
-    tr.addTest(TestAllocator<Allocator<Elephant, 400> >::suite());
-    tr.addTest(TestPrivate<Elephant, 400>::suite());
-    */
-
-    std::allocator<int> x;
-    x.allocate(0);
 
     tr.run();
 
