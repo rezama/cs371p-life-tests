@@ -133,7 +133,6 @@ struct TestDarwin : CppUnit::TestFixture {
         try {
             Grid::Species s = Grid::Species(".");
             s.add(ACTION_HOP, 0);
-            s.add(MAX_INSTRUCTIONS, 0);
             s.reset();
             CPPUNIT_ASSERT(s._program.size() == 0);
         } catch (const invalid_argument&) {
@@ -423,6 +422,14 @@ struct TestDarwin : CppUnit::TestFixture {
     CPPUNIT_TEST(test_Species2);
     CPPUNIT_TEST(test_Species3);
     
+    CPPUNIT_TEST(test_SpeciesAdd1);
+    CPPUNIT_TEST(test_SpeciesAdd2);
+    CPPUNIT_TEST(test_SpeciesAdd3);
+
+    CPPUNIT_TEST(test_SpeciesReset1);
+    CPPUNIT_TEST(test_SpeciesReset2);
+    CPPUNIT_TEST(test_SpeciesReset3);
+
     CPPUNIT_TEST(test_Creature1);
     CPPUNIT_TEST(test_Creature2);
     CPPUNIT_TEST(test_Creature3);
