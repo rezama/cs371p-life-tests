@@ -1,10 +1,10 @@
-==5656== Memcheck, a memory error detector
-==5656== Copyright (C) 2002-2011, and GNU GPL'd, by Julian Seward et al.
-==5656== Using Valgrind-3.7.0 and LibVEX; rerun with -h for copyright info
-==5656== Command: TestDarwin
-==5656== 
+==18334== Memcheck, a memory error detector
+==18334== Copyright (C) 2002-2011, and GNU GPL'd, by Julian Seward et al.
+==18334== Using Valgrind-3.7.0 and LibVEX; rerun with -h for copyright info
+==18334== Command: TestDarwin
+==18334== 
 TestDarwin.c++
-......................Turn = 0.
+...................Turn = 0.
   0
 0 f
 
@@ -43,22 +43,22 @@ Turn = 1.
 
 
 
-OK (24 tests)
+OK (21 tests)
 
 
 Done.
-==5656== 
-==5656== HEAP SUMMARY:
-==5656==     in use at exit: 122,880 bytes in 6 blocks
-==5656==   total heap usage: 2,106 allocs, 2,100 frees, 1,008,834 bytes allocated
-==5656== 
-==5656== LEAK SUMMARY:
-==5656==    definitely lost: 0 bytes in 0 blocks
-==5656==    indirectly lost: 0 bytes in 0 blocks
-==5656==      possibly lost: 0 bytes in 0 blocks
-==5656==    still reachable: 122,880 bytes in 6 blocks
-==5656==         suppressed: 0 bytes in 0 blocks
-==5656== Rerun with --leak-check=full to see details of leaked memory
-==5656== 
-==5656== For counts of detected and suppressed errors, rerun with: -v
-==5656== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
+==18334== 
+==18334== HEAP SUMMARY:
+==18334==     in use at exit: 122,880 bytes in 6 blocks
+==18334==   total heap usage: 1,884 allocs, 1,878 frees, 996,610 bytes allocated
+==18334== 
+==18334== LEAK SUMMARY:
+==18334==    definitely lost: 0 bytes in 0 blocks
+==18334==    indirectly lost: 0 bytes in 0 blocks
+==18334==      possibly lost: 0 bytes in 0 blocks
+==18334==    still reachable: 122,880 bytes in 6 blocks
+==18334==         suppressed: 0 bytes in 0 blocks
+==18334== Rerun with --leak-check=full to see details of leaked memory
+==18334== 
+==18334== For counts of detected and suppressed errors, rerun with: -v
+==18334== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)

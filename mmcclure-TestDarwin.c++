@@ -42,28 +42,6 @@ To test the program:
 // -----------
 
 struct TestDarwin : CppUnit::TestFixture {
-    
-    // -----
-    // Grid::TokenizeString
-    // -----
-
-    void test_TokenizeString1 () {
-        vector<string> tokens;
-        Grid s = Grid(1, 1);
-        s.TokenizeString("", ' ', tokens);
-        CPPUNIT_ASSERT(tokens.size() == 0);}
-
-    void test_TokenizeString2 () {
-        vector<string> tokens;
-        Grid s = Grid(1, 1);
-        s.TokenizeString(" ", ' ', tokens);
-        CPPUNIT_ASSERT(tokens.size() == 0);}
-    
-    void test_TokenizeString3 () {
-        vector<string> tokens;
-        Grid s = Grid(1, 1);
-        s.TokenizeString("a", ' ', tokens);
-        CPPUNIT_ASSERT(tokens.size() == 1);}
 
     // -----
     // Species class constructor
@@ -71,7 +49,7 @@ struct TestDarwin : CppUnit::TestFixture {
 
     void test_Species1 () {
         try {
-            Grid::Species s = Grid::Species(NULL, NULL, 0);
+            Grid::Species s = Grid::Species(NULL);
             CPPUNIT_ASSERT(false);
         } catch (const invalid_argument&) {
             CPPUNIT_ASSERT(true);
@@ -81,7 +59,35 @@ struct TestDarwin : CppUnit::TestFixture {
     
     void test_Species2 () {
         try {
-            Grid::Species s = Grid::Species("NAME", NULL, 1);
+            Grid::Species s = Grid::Species("NAME");
+            CPPUNIT_ASSERT(s._program.size() == 0);
+            CPPUNIT_ASSERT(s._name.compare("NAME") == 0);
+        } catch (const invalid_argument&) {
+            CPPUNIT_ASSERT(false);
+        } catch (const out_of_range&) {
+            CPPUNIT_ASSERT(false);
+        }}
+    
+    void test_Species3 () {
+        try {
+            Grid::Species s = Grid::Species("NAME");
+            s.add(CONTROL_GOTO, 0);
+            CPPUNIT_ASSERT(s._program.size() == 1);
+        } catch (const invalid_argument&) {
+            CPPUNIT_ASSERT(false);
+        } catch (const out_of_range&) {
+            CPPUNIT_ASSERT(false);
+        }}
+
+    // -----
+    // Species add expression
+    // -----
+    
+    void test_SpeciesAdd1 () {
+        try {
+            Grid::Species s = Grid::Species(".");
+            s.add(ACTION_HOP, 0);
+            s.add(MAX_INSTRUCTIONS, 0);
             CPPUNIT_ASSERT(false);
         } catch (const invalid_argument&) {
             CPPUNIT_ASSERT(true);
@@ -89,19 +95,85 @@ struct TestDarwin : CppUnit::TestFixture {
             CPPUNIT_ASSERT(false);
         }}
     
-    void test_Species3 () {
+    void test_SpeciesAdd2 () {
         try {
-            const char *program[] = {
-                "0: go 0"
-            };
-            Grid::Species s = Grid::Species("NAME", program, 1);
-            CPPUNIT_ASSERT(true);
+            Grid::Species s = Grid::Species("NAME");
+            s.add(ACTION_HOP, 0);
+            s.add(ACTION_TURN_LEFT, 0);
+            s.add(ACTION_TURN_RIGHT, 0);
+            s.add(ACTION_INFECT, 0);
+            s.add(CONTROL_IF_EMPTY, 0);
+            s.add(CONTROL_IF_WALL, 0);
+            s.add(CONTROL_IF_RANDOM, 0);
+            s.add(CONTROL_IF_ENEMY, 0);
+            s.add(CONTROL_GOTO, 0);
+            CPPUNIT_ASSERT(s._program.size() == 9);
+        } catch (const invalid_argument&) {
+            CPPUNIT_ASSERT(false);
+        } catch (const out_of_range&) {
+            CPPUNIT_ASSERT(false);
+        }}
+    
+    void test_SpeciesAdd3 () {
+        try {
+            Grid::Species s = Grid::Species("NAME");
+            s.add(CONTROL_GOTO, 0);
+            CPPUNIT_ASSERT(s._program.size() == 1);
         } catch (const invalid_argument&) {
             CPPUNIT_ASSERT(false);
         } catch (const out_of_range&) {
             CPPUNIT_ASSERT(false);
         }}
 
+    // -----
+    // Species reset expression
+    // -----
+    
+    void test_SpeciesReset1 () {
+        try {
+            Grid::Species s = Grid::Species(".");
+            s.add(ACTION_HOP, 0);
+            s.add(MAX_INSTRUCTIONS, 0);
+            s.reset();
+            CPPUNIT_ASSERT(s._program.size() == 0);
+        } catch (const invalid_argument&) {
+            CPPUNIT_ASSERT(false);
+        } catch (const out_of_range&) {
+            CPPUNIT_ASSERT(false);
+        }}
+    
+    void test_SpeciesReset2 () {
+        try {
+            Grid::Species s = Grid::Species("NAME");
+            s.add(ACTION_HOP, 0);
+            s.add(ACTION_TURN_LEFT, 0);
+            s.add(ACTION_TURN_RIGHT, 0);
+            s.add(ACTION_INFECT, 0);
+            s.add(CONTROL_IF_EMPTY, 0);
+            s.add(CONTROL_IF_WALL, 0);
+            s.add(CONTROL_IF_RANDOM, 0);
+            s.add(CONTROL_IF_ENEMY, 0);
+            s.reset();
+            s.add(CONTROL_GOTO, 0);
+            CPPUNIT_ASSERT(s._program.size() == 1);
+        } catch (const invalid_argument&) {
+            CPPUNIT_ASSERT(false);
+        } catch (const out_of_range&) {
+            CPPUNIT_ASSERT(false);
+        }}
+    
+    void test_SpeciesReset3 () {
+        try {
+            Grid::Species s = Grid::Species("NAME");
+            s.add(CONTROL_GOTO, 0);
+            s.reset();
+            CPPUNIT_ASSERT(s._program.size() == 0);
+        } catch (const invalid_argument&) {
+            CPPUNIT_ASSERT(false);
+        } catch (const out_of_range&) {
+            CPPUNIT_ASSERT(false);
+        }}
+    
     // -----
     // Creature class constructor
     // -----
@@ -346,9 +418,6 @@ struct TestDarwin : CppUnit::TestFixture {
     // -----
 
     CPPUNIT_TEST_SUITE(TestDarwin);
-    CPPUNIT_TEST(test_TokenizeString1);
-    CPPUNIT_TEST(test_TokenizeString2);
-    CPPUNIT_TEST(test_TokenizeString3);
 
     CPPUNIT_TEST(test_Species1);
     CPPUNIT_TEST(test_Species2);
