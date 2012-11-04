@@ -1,8 +1,15 @@
-/**
- * To test the program:
- *		g++ -pedantic -lcppunit -ldl -Wall TestDarwin.c++ -o TestDarwin.app
- *		valgrind TestDarwin.app >& TestDarwin.out
- */
+/*
+Ian Buitrago
+Jonathan Chen
+11-7-2012
+CS 371p
+project 5 - Darwin
+
+compile:
+	$ g++ -std=c++0x -ldl TestDarwin.c++ -lcppunit -o TestDarwin.c++.app
+execute:
+	$ valgrind ./TestDarwin.c++.app 2>&1 | tee TestDarwin.out
+*/
 
 // --------
 // includes
@@ -100,6 +107,29 @@ struct TestDarwin : CppUnit::TestFixture {
 		g.simulate(10, 1);
 	}
 	
+	// --------
+	// testBest
+	void testBest1 () {
+		Grid g(50, 50);
+		srand(0);
+			
+		g.randPlace(BEST  , 5);
+		g.randPlace(ROVER , 5);
+		g.randPlace(FOOD  , 5);
+		g.randPlace(HOPPER, 5);
+		g.simulate(500, 50);
+	}
+	void testBest2 () {
+		Grid g(80, 80);
+		srand(0);
+			
+		g.randPlace(BEST  , 13);
+		g.randPlace(ROVER , 13);
+		g.randPlace(FOOD  , 13);
+		g.randPlace(HOPPER, 13);
+		g.simulate(1000, 500);
+	}
+	
 	// -----
 	// suite
 	CPPUNIT_TEST_SUITE(TestDarwin);
@@ -113,6 +143,8 @@ struct TestDarwin : CppUnit::TestFixture {
 	CPPUNIT_TEST(testTrap1);
 	CPPUNIT_TEST(testRover0);
 	CPPUNIT_TEST(testBest0);
+	CPPUNIT_TEST(testBest1);
+	CPPUNIT_TEST(testBest2);
 	
 	CPPUNIT_TEST_SUITE_END();
 };
