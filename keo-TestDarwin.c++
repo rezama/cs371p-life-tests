@@ -17,6 +17,7 @@ execute:
 #include "cppunit/TestFixture.h"				// TestFixture
 #include "cppunit/TextTestRunner.h"				// TestRunner
 
+#define private public
 #include "Darwin.h"
 
 // ----------
@@ -27,32 +28,75 @@ struct TestDarwin : CppUnit::TestFixture {
 	void testGrid0 () {
 		Grid g(2, 2);
 		
-		g.print();
+		CPPUNIT_ASSERT(g.nRows() == 2);
+		CPPUNIT_ASSERT(g.nCols() == 2);
+		CPPUNIT_ASSERT(g.turn == 0);
+		CPPUNIT_ASSERT(g.creatureStash.size() == 0);
 	}
 	
 	// --------
 	// testPlace
 	void testPlace0 () {
 		Grid g(3, 3);
+		int r = 1;
+		int c = 1;
 		
-		g.place(HOPPER, 'n', 1, 1);
+		g.place(HOPPER, NORTH, r, c);
+		CPPUNIT_ASSERT(g.creatureStash.size() == 1);
+		CPPUNIT_ASSERT(g._g[r][c] !=  NULL);
+	}
+	
+	// out of bounds tests
+	void testPlace1 () {
+		Grid g(3, 3);
+		int r = -1;
+		int c = -1;
+		try{
+			g.place(HOPPER, NORTH, r, c);
+			CPPUNIT_ASSERT(false);
+		}catch(...){
+			CPPUNIT_ASSERT(true);
+		}			
+	}
+	
+	void testPlace2 () {
+		Grid g(3, 3);
+		int r = 3;
+		int c = 3;
+		try{
+			g.place(HOPPER, NORTH, r, c);
+			CPPUNIT_ASSERT(false);
+		}catch(...){
+			CPPUNIT_ASSERT(true);
+		}			
+	}
+	// --------
+	// testCreature
+	void testCreature0 () {
+		Creature c (NORTH, 1, 2, NULL, HOPPER);
 		
-		g.print();
+		CPPUNIT_ASSERT(c.direction == NORTH);
+		CPPUNIT_ASSERT(c.row == 1);
+		CPPUNIT_ASSERT(c.col == 2);
+		CPPUNIT_ASSERT(c.grid == NULL);
+		CPPUNIT_ASSERT(c.sigil == HOPPER);
+		CPPUNIT_ASSERT(c.turn == 0);
+		CPPUNIT_ASSERT(c.pc == 0);
+		CPPUNIT_ASSERT(c.program == &Creature::pHopper);
 	}
 	
 	// --------
 	// testHop
 	void testHop0 () {
 		Grid g(3, 3);
-		g.place(HOPPER, 's', 0, 1);
-		
+		g.place(HOPPER, SOUTH, 0, 1);
 		g.simulate(3, 1);
 	}
 	// hop into each other
 	void testHop1 () {
 		Grid g(3, 3);
-		g.place(HOPPER, 'e', 1, 1);
-		g.place(HOPPER, 'w', 1, 2);
+		g.place(HOPPER, EAST, 1, 1);
+		g.place(HOPPER, WEST, 1, 2);
 		
 		g.simulate(2, 1);
 	}
@@ -62,7 +106,7 @@ struct TestDarwin : CppUnit::TestFixture {
 	void testFood0 () {
 		Grid g(2, 2);
 		
-		g.place(FOOD, 's', 0, 0);
+		g.place(FOOD, SOUTH, 0, 0);
 		g.simulate(2, 1);
 	}
 	
@@ -71,14 +115,14 @@ struct TestDarwin : CppUnit::TestFixture {
 	void testTrap0 () {
 		Grid g(2, 2);
 		
-		g.place(TRAP, 's', 0, 0);
+		g.place(TRAP, SOUTH, 0, 0);
 		g.simulate(2, 1);
 	}
 	void testTrap1 () {
 		Grid g(3, 3);
 		
-		g.place(TRAP, 'e', 1, 1);
-		g.place(FOOD, 's', 1, 2);
+		g.place(TRAP, EAST, 1, 1);
+		g.place(FOOD, SOUTH, 1, 2);
 		g.simulate(2, 1);
 	}
 	
@@ -88,9 +132,9 @@ struct TestDarwin : CppUnit::TestFixture {
 		Grid g(4, 4);
 		srand(0);
 		
-		g.place(ROVER , 'e', 1, 1);
-		g.place(FOOD  , 's', 1, 3);
-		g.place(HOPPER, 'e', 2, 2);
+		g.place(ROVER , EAST, 1, 1);
+		g.place(FOOD  , SOUTH, 1, 3);
+		g.place(HOPPER, EAST, 2, 2);
 		g.simulate(6, 1);
 	}
 	
@@ -99,11 +143,11 @@ struct TestDarwin : CppUnit::TestFixture {
 	void testBest0 () {
 		Grid g(5, 5);
 		srand(0);
-			
-		g.place(BEST  , 'e', 0, 0);
-		g.place(ROVER , 'e', 1, 1);
-		g.place(FOOD  , 's', 1, 3);
-		g.place(HOPPER, 'e', 2, 2);
+		
+		g.place(BEST  , EAST, 0, 0);
+		g.place(ROVER , EAST, 1, 1);
+		g.place(FOOD  , SOUTH, 1, 3);
+		g.place(HOPPER, EAST, 2, 2);
 		g.simulate(10, 1);
 	}
 	
@@ -112,21 +156,23 @@ struct TestDarwin : CppUnit::TestFixture {
 	void testBest1 () {
 		Grid g(50, 50);
 		srand(0);
-			
+		
 		g.randPlace(BEST  , 5);
 		g.randPlace(ROVER , 5);
 		g.randPlace(FOOD  , 5);
 		g.randPlace(HOPPER, 5);
+		g.randPlace(TRAP  , 5);
 		g.simulate(500, 50);
 	}
 	void testBest2 () {
 		Grid g(80, 80);
 		srand(0);
-			
+		
 		g.randPlace(BEST  , 13);
 		g.randPlace(ROVER , 13);
 		g.randPlace(FOOD  , 13);
 		g.randPlace(HOPPER, 13);
+		g.randPlace(TRAP  , 13);
 		g.simulate(1000, 500);
 	}
 	
@@ -136,6 +182,9 @@ struct TestDarwin : CppUnit::TestFixture {
 	
 	CPPUNIT_TEST(testGrid0);
 	CPPUNIT_TEST(testPlace0);
+	CPPUNIT_TEST(testPlace1);
+	CPPUNIT_TEST(testPlace2);
+	CPPUNIT_TEST(testCreature0);
 	CPPUNIT_TEST(testHop0);
 	CPPUNIT_TEST(testHop1);
 	CPPUNIT_TEST(testFood0);
