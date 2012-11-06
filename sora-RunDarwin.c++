@@ -249,191 +249,191 @@ int main () {
     catch (const out_of_range&) {
         assert(false);}
 
-//    // ------------
-//    // darwin 72x72
-//    // with best
-//    // ------------
-//
-//    try {
-//        cout << "*** Darwin 72x72 with Best ***" << endl;
-//        srand(0);
-//        /*
-//        Randomly place the following creatures facing randomly.
-//        Call rand(), mod it with 5184 (72x72), and use that for the position
-//        in a row-major order grid.
-//        Call rand() again, mod it with 4 and use that for it's direction with
-//        the ordering: west, north, east, south.
-//        Do that for each kind of creature.
-//        10 Food
-//        10 Hopper
-//        10 Rover
-//        10 Trap
-//        10 Best
-//        Simulate 1000 moves.
-//        Best MUST outnumber ALL other species for the bonus pts.
-//        Print every 100th grid.
-//        */
-//        Darwin executor(72, 72);
-//        for (int i=0; i<5; ++i) {
-//            for (int j=0; j<10; ++j) {
-//                int pos = rand() % 5184;
-//                executor.set_contents(pos/72, pos%72, creature(rand()%4, spec_array[i]));
-//            }
-//        }
-//        executor.run(1000, 100);
-//    }
-//    catch (const invalid_argument&) {
-//        assert(false);}
-//    catch (const out_of_range& e) {
-//        cerr << e.what();
-//        assert(false);}
-// 
-//    // ----------
-//    // darwin 1x1
-//    // ----------
-//    
-//    try {
-//        cout << "*** Darwin 1x1 ***" << endl;
-//        Darwin executor(1, 1);
-//        executor.run(4, 1);
-//    }
-//    catch (const invalid_argument&) {
-//        assert(false);}
-//    catch (const out_of_range&) {
-//        assert(false);}
-//
-//    
-//    // ----------
-//    // darwin 1x1
-//    // ----------
-//    
-//    try {
-//        cout << "*** Darwin 1x1 ***" << endl;
-//        Darwin executor(1, 1);
-//        executor.set_contents(0, 0, creature(enums::south, &trap));
-//        executor.run(4, 1);
-//    }
-//    catch (const invalid_argument&) {
-//        assert(false);}
-//    catch (const out_of_range&) {
-//        assert(false);}
-//    
-//    // ----------
-//    // darwin 4x4
-//    // ----------
-//    
-//    try {
-//        cout << "*** Darwin 4x4 ***" << endl;
-//        Darwin executor(4, 4);
-//        executor.set_contents(0, 0, creature(enums::south, &food));
-//        executor.set_contents(0, 1, creature(enums::south, &trap));
-//        executor.set_contents(1, 0, creature(enums::south, &trap));
-//        executor.set_contents(1, 1, creature(enums::south, &food));
-//        executor.run(4, 1);
-//    }
-//    catch (const invalid_argument&) {
-//        assert(false);}
-//    catch (const out_of_range&) {
-//        assert(false);}
-//    
-//    
-//    // ----------
-//    // darwin 4x4
-//    // ----------
-//    
-//    try {
-//        cout << "*** Darwin 4x4 ***" << endl;
-//        srand(0);
-//        Darwin executor(4, 4);
-//        executor.set_contents(0, 0, creature(enums::south, &rover));
-//        executor.set_contents(0, 1, creature(enums::south, &food));
-//        executor.set_contents(1, 0, creature(enums::south, &food));
-//        executor.set_contents(1, 1, creature(enums::south, &food));
-//        executor.run(20, 1);
-//    }
-//    catch (const invalid_argument&) {
-//        assert(false);}
-//    catch (const out_of_range&) {
-//        assert(false);}
-//    
-//    
-//    // ----------
-//    // darwin 2x2
-//    // ----------
-//    
-//    try {
-//        cout << "*** Darwin 2x2 ***" << endl;
-//        srand(0);
-//        Darwin executor(2, 2);
-//        executor.set_contents(0, 0, creature(enums::south, &hopper));
-//        executor.set_contents(0, 1, creature(enums::south, &food));
-//        executor.set_contents(1, 0, creature(enums::south, &food));
-//        executor.set_contents(1, 1, creature(enums::south, &food));
-//        executor.run(5, 1);
-//    }
-//    catch (const invalid_argument&) {
-//        assert(false);}
-//    catch (const out_of_range&) {
-//        assert(false);}
-//    
-//    
-//    // ----------
-//    // darwin 1x10
-//    // ----------
-//    
-//    try {
-//        cout << "*** Darwin 1x10 ***" << endl;
-//        srand(0);
-//        Darwin executor(1, 10);
-//        executor.set_contents(0, 0, creature(enums::south, &rover));
-//        executor.set_contents(0, 5, creature(enums::south, &food));
-//        executor.set_contents(0, 9, creature(enums::south, &trap));
-//        executor.run(20, 1);
-//    }
-//    catch (const invalid_argument&) {
-//        assert(false);}
-//    catch (const out_of_range&) {
-//        assert(false);}
-//
-//    
-//    
-//    
-//    // -----------------
-//    // #2 darwin 3x1
-//    // -----------------
-//    try {
-//        cout << "*** Darwin 3x1 ***" << endl;
-//        srand(0);
-//        Darwin s(3, 1);
-//        s.set_contents(0, 0, creature(enums::east, &food));
-//        s.set_contents(1, 0, creature(enums::east, &hopper));
-//        s.set_contents(2, 0, creature(enums::east, &rover));
-//        s.run(10, 1);
-//    }
-//    catch (const invalid_argument&) {
-//        assert(false);}
-//    catch (const out_of_range&) {
-//        assert(false);}
-//    
-//    
-//    // -----------------
-//    // #7 darwin 3x9
-//    // -----------------
-//    try {
-//        cout << "*** Darwin 3x9 ***" << endl;
-//        srand(0);
-//        Darwin s(3, 9);
-//        s.set_contents(0, 0, creature(enums::south, &hopper));
-//        s.set_contents(0, 1, creature(enums::west, &hopper));
-//        s.set_contents(0, 2, creature(enums::south, &hopper));
-//        s.set_contents(0, 3, creature(enums::west, &hopper));
-//        s.set_contents(1, 0, creature(enums::south, &rover));
-//        s.set_contents(1, 1, creature(enums::west, &trap));
-//        s.run(5, 1);
-//    }
-//    catch (const invalid_argument&) {
-//        assert(false);}
-//    catch (const out_of_range&) {
-//        assert(false);}
+    // ------------
+    // darwin 72x72
+    // with best
+    // ------------
+
+    try {
+        cout << "*** Darwin 72x72 with Best ***" << endl;
+        srand(0);
+        /*
+        Randomly place the following creatures facing randomly.
+        Call rand(), mod it with 5184 (72x72), and use that for the position
+        in a row-major order grid.
+        Call rand() again, mod it with 4 and use that for it's direction with
+        the ordering: west, north, east, south.
+        Do that for each kind of creature.
+        10 Food
+        10 Hopper
+        10 Rover
+        10 Trap
+        10 Best
+        Simulate 1000 moves.
+        Best MUST outnumber ALL other species for the bonus pts.
+        Print every 100th grid.
+        */
+        Darwin executor(72, 72);
+        for (int i=0; i<5; ++i) {
+            for (int j=0; j<10; ++j) {
+                int pos = rand() % 5184;
+                executor.set_contents(pos/72, pos%72, creature(rand()%4, spec_array[i]));
+            }
+        }
+        executor.run(1000, 100);
+    }
+    catch (const invalid_argument&) {
+        assert(false);}
+    catch (const out_of_range& e) {
+        cerr << e.what();
+        assert(false);}
+ 
+    // ----------
+    // darwin 1x1
+    // ----------
+    
+    try {
+        cout << "*** Darwin 1x1 ***" << endl;
+        Darwin executor(1, 1);
+        executor.run(4, 1);
+    }
+    catch (const invalid_argument&) {
+        assert(false);}
+    catch (const out_of_range&) {
+        assert(false);}
+
+    
+    // ----------
+    // darwin 1x1
+    // ----------
+    
+    try {
+        cout << "*** Darwin 1x1 ***" << endl;
+        Darwin executor(1, 1);
+        executor.set_contents(0, 0, creature(enums::south, &trap));
+        executor.run(4, 1);
+    }
+    catch (const invalid_argument&) {
+        assert(false);}
+    catch (const out_of_range&) {
+        assert(false);}
+    
+    // ----------
+    // darwin 4x4
+    // ----------
+    
+    try {
+        cout << "*** Darwin 4x4 ***" << endl;
+        Darwin executor(4, 4);
+        executor.set_contents(0, 0, creature(enums::south, &food));
+        executor.set_contents(0, 1, creature(enums::south, &trap));
+        executor.set_contents(1, 0, creature(enums::south, &trap));
+        executor.set_contents(1, 1, creature(enums::south, &food));
+        executor.run(4, 1);
+    }
+    catch (const invalid_argument&) {
+        assert(false);}
+    catch (const out_of_range&) {
+        assert(false);}
+    
+    
+    // ----------
+    // darwin 4x4
+    // ----------
+    
+    try {
+        cout << "*** Darwin 4x4 ***" << endl;
+        srand(0);
+        Darwin executor(4, 4);
+        executor.set_contents(0, 0, creature(enums::south, &rover));
+        executor.set_contents(0, 1, creature(enums::south, &food));
+        executor.set_contents(1, 0, creature(enums::south, &food));
+        executor.set_contents(1, 1, creature(enums::south, &food));
+        executor.run(20, 1);
+    }
+    catch (const invalid_argument&) {
+        assert(false);}
+    catch (const out_of_range&) {
+        assert(false);}
+    
+    
+    // ----------
+    // darwin 2x2
+    // ----------
+    
+    try {
+        cout << "*** Darwin 2x2 ***" << endl;
+        srand(0);
+        Darwin executor(2, 2);
+        executor.set_contents(0, 0, creature(enums::south, &hopper));
+        executor.set_contents(0, 1, creature(enums::south, &food));
+        executor.set_contents(1, 0, creature(enums::south, &food));
+        executor.set_contents(1, 1, creature(enums::south, &food));
+        executor.run(5, 1);
+    }
+    catch (const invalid_argument&) {
+        assert(false);}
+    catch (const out_of_range&) {
+        assert(false);}
+    
+    
+    // ----------
+    // darwin 1x10
+    // ----------
+    
+    try {
+        cout << "*** Darwin 1x10 ***" << endl;
+        srand(0);
+        Darwin executor(1, 10);
+        executor.set_contents(0, 0, creature(enums::south, &rover));
+        executor.set_contents(0, 5, creature(enums::south, &food));
+        executor.set_contents(0, 9, creature(enums::south, &trap));
+        executor.run(20, 1);
+    }
+    catch (const invalid_argument&) {
+        assert(false);}
+    catch (const out_of_range&) {
+        assert(false);}
+
+    
+    
+    
+    // -----------------
+    // #2 darwin 3x1
+    // -----------------
+    try {
+        cout << "*** Darwin 3x1 ***" << endl;
+        srand(0);
+        Darwin s(3, 1);
+        s.set_contents(0, 0, creature(enums::east, &food));
+        s.set_contents(1, 0, creature(enums::east, &hopper));
+        s.set_contents(2, 0, creature(enums::east, &rover));
+        s.run(10, 1);
+    }
+    catch (const invalid_argument&) {
+        assert(false);}
+    catch (const out_of_range&) {
+        assert(false);}
+    
+    
+    // -----------------
+    // #7 darwin 3x9
+    // -----------------
+    try {
+        cout << "*** Darwin 3x9 ***" << endl;
+        srand(0);
+        Darwin s(3, 9);
+        s.set_contents(0, 0, creature(enums::south, &hopper));
+        s.set_contents(0, 1, creature(enums::west, &hopper));
+        s.set_contents(0, 2, creature(enums::south, &hopper));
+        s.set_contents(0, 3, creature(enums::west, &hopper));
+        s.set_contents(1, 0, creature(enums::south, &rover));
+        s.set_contents(1, 1, creature(enums::west, &trap));
+        s.run(5, 1);
+    }
+    catch (const invalid_argument&) {
+        assert(false);}
+    catch (const out_of_range&) {
+        assert(false);}
     
     return 0;}
