@@ -245,7 +245,6 @@ int main () {
           d.makeCreature(&trap, (dir + 3) % 4, x, y);
         }
 
-        cout << d.drawMap();
 
         for (int i = 0; i < 1000; i++) {
           if (i % 100 == 0)
@@ -362,7 +361,6 @@ int main () {
           d.makeCreature(&best, (dir + 3) % 4, x, y);
         }
 
-        cout << d.drawMap();
 
         for (int i = 0; i <= 1000; i++) {
           if (i % 100 == 0)
@@ -384,6 +382,601 @@ int main () {
 
         cout << endl << "number of best: " << numB << endl;
         cout << endl << "number of rover: " << numR << endl;
+
+        }
+    catch (const invalid_argument&) {
+        assert(false);}
+    catch (const out_of_range&) {
+        assert(false);}
+
+    // ------------
+    // darwin 40x40
+    // with best
+    // ------------
+
+    try {
+        cout << "*** Darwin - THE GAUNTLET - 40x40 with Best ***" << endl;
+        srand(0);
+        /*
+        Randomly place the following creatures facing randomly.
+        Call rand(), mod it with 1600 (40x40), and use that for the position
+        in a row-major order grid.
+        Call rand() again, mod it with 4 and use that for it's direction with
+        the ordering: west, north, east, south.
+        Do that for each kind of creature.
+        10 Rover
+        10 Best
+        Simulate 1000 moves.
+        Best MUST outnumber ALL other species for the bonus pts.
+        Print every 100th grid.
+        */
+        DungeonKeeper d(40, 40);
+
+        for (int i = 0; i < 10; i++) {
+          int pos = rand() % 1600;
+          int dir = rand() % 4;
+          int x, y, count;
+          x = y = count = 0;
+          for (int j = 0; j < 40; j++) {
+            for (int k = 0; k < 40; k++) {
+              if (count++ == pos) {
+                x = j;
+                y = k;
+              }
+            }
+          }
+          if (d.map[x][y] != -1) {
+            i--;
+            continue;
+          }
+          d.makeCreature(&rover, (dir + 3) % 4, x, y);
+        }
+        for (int i = 0; i < 10; i++) {
+          int pos = rand() % 1600;
+          int dir = rand() % 4;
+          int x, y, count;
+          x = y = count = 0;
+          for (int j = 0; j < 40; j++) {
+            for (int k = 0; k < 40; k++) {
+              if (count++ == pos) {
+                x = j;
+                y = k;
+              }
+            }
+          }
+          if (d.map[x][y] != -1) {
+            i--;
+            continue;
+          }
+          d.makeCreature(&best, (dir + 3) % 4, x, y);
+        }
+
+
+        for (int i = 0; i <= 1000; i++) {
+          if (i % 100 == 0)
+            cout << d.drawMap();
+
+          d.updateMap();
+        }
+
+        int numB = 0;
+        int numR = 0;
+        for (int i = 0; i < 40; i++) {
+          for (int j = 0; j < 40; j++) {
+            if (d.map[i][j] != -1 && d.creatureList[d.map[i][j]].spec->image == 'b')
+              numB++;
+            if (d.map[i][j] != -1 && d.creatureList[d.map[i][j]].spec->image == 'r')
+              numR++;
+          }
+        }
+
+        cout << endl << "number of best: " << numB << endl;
+        cout << endl << "number of rover: " << numR << endl;
+
+        }
+    catch (const invalid_argument&) {
+        assert(false);}
+    catch (const out_of_range&) {
+        assert(false);}
+
+    // ------------
+    // darwin 40x40
+    // just food
+    // ------------
+
+    try {
+        cout << "*** Darwin 40x40 just food ***" << endl;
+        srand(0);
+        /*
+        Randomly place the following creatures facing randomly.
+        Call rand(), mod it with 1600 (40x40), and use that for the position
+        in a row-major order grid.
+        Call rand() again, mod it with 4 and use that for it's direction with
+        the ordering: west, north, east, south.
+        Do that for each kind of creature.
+        10 Food
+        Simulate 1000 moves.
+        Best MUST outnumber ALL other species for the bonus pts.
+        Print every 100th grid.
+        */
+        DungeonKeeper d(40, 40);
+
+        for (int i = 0; i < 10; i++) {
+          int pos = rand() % 1600;
+          int dir = rand() % 4;
+          int x, y, count;
+          x = y = count = 0;
+          for (int j = 0; j < 40; j++) {
+            for (int k = 0; k < 40; k++) {
+              if (count++ == pos) {
+                x = j;
+                y = k;
+              }
+            }
+          }
+          if (d.map[x][y] != -1) {
+            i--;
+            continue;
+          }
+          d.makeCreature(&food, (dir + 3) % 4, x, y);
+        }
+
+        for (int i = 0; i <= 1000; i++) {
+          if (i % 100 == 0)
+            cout << d.drawMap();
+
+          d.updateMap();
+        }
+
+        }
+    catch (const invalid_argument&) {
+        assert(false);}
+    catch (const out_of_range&) {
+        assert(false);}
+
+    // ------------
+    // darwin 40x40
+    // with best and trap
+    // ------------
+
+    try {
+        cout << "*** Darwin 40x40 with Best and trap ***" << endl;
+        srand(0);
+        /*
+        Randomly place the following creatures facing randomly.
+        Call rand(), mod it with 1600 (40x40), and use that for the position
+        in a row-major order grid.
+        Call rand() again, mod it with 4 and use that for it's direction with
+        the ordering: west, north, east, south.
+        Do that for each kind of creature.
+        10 Trap
+        10 Best
+        Simulate 1000 moves.
+        Best MUST outnumber ALL other species for the bonus pts.
+        Print every 100th grid.
+        */
+        DungeonKeeper d(40, 40);
+
+        for (int i = 0; i < 10; i++) {
+          int pos = rand() % 1600;
+          int dir = rand() % 4;
+          int x, y, count;
+          x = y = count = 0;
+          for (int j = 0; j < 40; j++) {
+            for (int k = 0; k < 40; k++) {
+              if (count++ == pos) {
+                x = j;
+                y = k;
+              }
+            }
+          }
+          if (d.map[x][y] != -1) {
+            i--;
+            continue;
+          }
+          d.makeCreature(&trap, (dir + 3) % 4, x, y);
+        }
+        for (int i = 0; i < 10; i++) {
+          int pos = rand() % 1600;
+          int dir = rand() % 4;
+          int x, y, count;
+          x = y = count = 0;
+          for (int j = 0; j < 40; j++) {
+            for (int k = 0; k < 40; k++) {
+              if (count++ == pos) {
+                x = j;
+                y = k;
+              }
+            }
+          }
+          if (d.map[x][y] != -1) {
+            i--;
+            continue;
+          }
+          d.makeCreature(&best, (dir + 3) % 4, x, y);
+        }
+
+
+        for (int i = 0; i <= 1000; i++) {
+          if (i % 100 == 0)
+            cout << d.drawMap();
+
+          d.updateMap();
+        }
+
+        int numB = 0;
+        int numR = 0;
+        for (int i = 0; i < 40; i++) {
+          for (int j = 0; j < 40; j++) {
+            if (d.map[i][j] != -1 && d.creatureList[d.map[i][j]].spec->image == 'b')
+              numB++;
+            if (d.map[i][j] != -1 && d.creatureList[d.map[i][j]].spec->image == 't')
+              numR++;
+          }
+        }
+
+        cout << endl << "number of best: " << numB << endl;
+        cout << endl << "number of trap: " << numR << endl;
+
+        }
+    catch (const invalid_argument&) {
+        assert(false);}
+    catch (const out_of_range&) {
+        assert(false);}
+
+    // ------------
+    // darwin 40x40
+    // with rover and trap
+    // ------------
+
+    try {
+        cout << "*** Darwin 40x40 with rover and trap ***" << endl;
+        srand(0);
+        /*
+        Randomly place the following creatures facing randomly.
+        Call rand(), mod it with 1600 (40x40), and use that for the position
+        in a row-major order grid.
+        Call rand() again, mod it with 4 and use that for it's direction with
+        the ordering: west, north, east, south.
+        Do that for each kind of creature.
+        10 Rover
+        10 trap
+        Simulate 1000 moves.
+        Best MUST outnumber ALL other species for the bonus pts.
+        Print every 100th grid.
+        */
+        DungeonKeeper d(40, 40);
+
+        for (int i = 0; i < 10; i++) {
+          int pos = rand() % 1600;
+          int dir = rand() % 4;
+          int x, y, count;
+          x = y = count = 0;
+          for (int j = 0; j < 40; j++) {
+            for (int k = 0; k < 40; k++) {
+              if (count++ == pos) {
+                x = j;
+                y = k;
+              }
+            }
+          }
+          if (d.map[x][y] != -1) {
+            i--;
+            continue;
+          }
+          d.makeCreature(&rover, (dir + 3) % 4, x, y);
+        }
+        for (int i = 0; i < 10; i++) {
+          int pos = rand() % 1600;
+          int dir = rand() % 4;
+          int x, y, count;
+          x = y = count = 0;
+          for (int j = 0; j < 40; j++) {
+            for (int k = 0; k < 40; k++) {
+              if (count++ == pos) {
+                x = j;
+                y = k;
+              }
+            }
+          }
+          if (d.map[x][y] != -1) {
+            i--;
+            continue;
+          }
+          d.makeCreature(&trap, (dir + 3) % 4, x, y);
+        }
+
+
+        for (int i = 0; i <= 1000; i++) {
+          if (i % 100 == 0)
+            cout << d.drawMap();
+
+          d.updateMap();
+        }
+
+        int numB = 0;
+        int numR = 0;
+        for (int i = 0; i < 40; i++) {
+          for (int j = 0; j < 40; j++) {
+            if (d.map[i][j] != -1 && d.creatureList[d.map[i][j]].spec->image == 't')
+              numB++;
+            if (d.map[i][j] != -1 && d.creatureList[d.map[i][j]].spec->image == 'r')
+              numR++;
+          }
+        }
+
+        cout << endl << "number of trap: " << numB << endl;
+        cout << endl << "number of rover: " << numR << endl;
+
+        }
+    catch (const invalid_argument&) {
+        assert(false);}
+    catch (const out_of_range&) {
+        assert(false);}
+
+    // ------------
+    // darwin 20x20
+    // with hopper and best
+    // ------------
+
+    try {
+        cout << "*** Darwin 20x20 with hopper and best ***" << endl;
+        srand(0);
+        /*
+        Randomly place the following creatures facing randomly.
+        Call rand(), mod it with 400 (20x20), and use that for the position
+        in a row-major order grid.
+        Call rand() again, mod it with 4 and use that for it's direction with
+        the ordering: west, north, east, south.
+        Do that for each kind of creature.
+        10 hopper
+        10 best
+        Simulate 1000 moves.
+        Best MUST outnumber ALL other species for the bonus pts.
+        Print every 100th grid.
+        */
+        DungeonKeeper d(20, 20);
+
+        for (int i = 0; i < 10; i++) {
+          int pos = rand() % 400;
+          
+          int dir = rand() % 4;
+          int x, y, count;
+          x = y = count = 0;
+          for (int j = 0; j < 20; j++) {
+            for (int k = 0; k < 20; k++) {
+              if (count++ == pos) {
+                x = j;
+                y = k;
+              }
+            }
+          }
+          if (d.map[x][y] != -1) {
+            i--;
+            continue;
+          }
+          d.makeCreature(&best, (dir + 3) % 4, x, y);
+        }
+        for (int i = 0; i < 10; i++) {
+          int pos = rand() % 400;
+          int dir = rand() % 4;
+          int x, y, count;
+          x = y = count = 0;
+          for (int j = 0; j < 20; j++) {
+            for (int k = 0; k < 20; k++) {
+              if (count++ == pos) {
+                x = j;
+                y = k;
+              }
+            }
+          }
+          if (d.map[x][y] != -1) {
+            i--;
+            continue;
+          }
+          d.makeCreature(&hopper, (dir + 3) % 4, x, y);
+        }
+
+
+        for (int i = 0; i <= 1000; i++) {
+          if (i % 100 == 0)
+            cout << d.drawMap();
+
+          d.updateMap();
+        }
+
+        int numB = 0;
+        int numR = 0;
+        for (int i = 0; i < 20; i++) {
+          for (int j = 0; j < 20; j++) {
+            if (d.map[i][j] != -1 && d.creatureList[d.map[i][j]].spec->image == 'b')
+              numB++;
+            if (d.map[i][j] != -1 && d.creatureList[d.map[i][j]].spec->image == 'h')
+              numR++;
+          }
+        }
+
+        cout << endl << "number of best: " << numB << endl;
+        cout << endl << "number of hopper: " << numR << endl;
+
+        }
+    catch (const invalid_argument&) {
+        assert(false);}
+    catch (const out_of_range&) {
+        assert(false);}
+
+    // ------------
+    // darwin 40x40
+    // with rover and hopper
+    // ------------
+
+    try {
+        cout << "*** Darwin 40x40 with rover and hopper ***" << endl;
+        srand(0);
+        /*
+        Randomly place the following creatures facing randomly.
+        Call rand(), mod it with 1600 (40x40), and use that for the position
+        in a row-major order grid.
+        Call rand() again, mod it with 4 and use that for it's direction with
+        the ordering: west, north, east, south.
+        Do that for each kind of creature.
+        10 Rover
+        10 hopper
+        Simulate 1000 moves.
+        Best MUST outnumber ALL other species for the bonus pts.
+        Print every 100th grid.
+        */
+        DungeonKeeper d(40, 40);
+
+        for (int i = 0; i < 10; i++) {
+          int pos = rand() % 1600;
+          int dir = rand() % 4;
+          int x, y, count;
+          x = y = count = 0;
+          for (int j = 0; j < 40; j++) {
+            for (int k = 0; k < 40; k++) {
+              if (count++ == pos) {
+                x = j;
+                y = k;
+              }
+            }
+          }
+          if (d.map[x][y] != -1) {
+            i--;
+            continue;
+          }
+          d.makeCreature(&rover, (dir + 3) % 4, x, y);
+        }
+        for (int i = 0; i < 10; i++) {
+          int pos = rand() % 1600;
+          int dir = rand() % 4;
+          int x, y, count;
+          x = y = count = 0;
+          for (int j = 0; j < 40; j++) {
+            for (int k = 0; k < 40; k++) {
+              if (count++ == pos) {
+                x = j;
+                y = k;
+              }
+            }
+          }
+          if (d.map[x][y] != -1) {
+            i--;
+            continue;
+          }
+          d.makeCreature(&hopper, (dir + 3) % 4, x, y);
+        }
+
+
+        for (int i = 0; i <= 1000; i++) {
+          if (i % 100 == 0)
+            cout << d.drawMap();
+
+          d.updateMap();
+        }
+
+        int numB = 0;
+        int numR = 0;
+        for (int i = 0; i < 40; i++) {
+          for (int j = 0; j < 40; j++) {
+            if (d.map[i][j] != -1 && d.creatureList[d.map[i][j]].spec->image == 'h')
+              numB++;
+            if (d.map[i][j] != -1 && d.creatureList[d.map[i][j]].spec->image == 'r')
+              numR++;
+          }
+        }
+
+        cout << endl << "number of hopper: " << numB << endl;
+        cout << endl << "number of rover: " << numR << endl;
+
+        }
+    catch (const invalid_argument&) {
+        assert(false);}
+    catch (const out_of_range&) {
+        assert(false);}
+
+    // ------------
+    // darwin 20x20
+    // with best and trap
+    // ------------
+
+    try {
+        cout << "*** Darwin 20x20 with best and trap ***" << endl;
+        srand(0);
+        /*
+        Randomly place the following creatures facing randomly.
+        Call rand(), mod it with 400 (20x20), and use that for the position
+        in a row-major order grid.
+        Call rand() again, mod it with 4 and use that for it's direction with
+        the ordering: west, north, east, south.
+        Do that for each kind of creature.
+        10 best
+        10 trap
+        Simulate 1000 moves.
+        Best MUST outnumber ALL other species for the bonus pts.
+        Print every 100th grid.
+        */
+        DungeonKeeper d(20, 20);
+
+        for (int i = 0; i < 10; i++) {
+          int pos = rand() % 400;
+          int dir = rand() % 4;
+          int x, y, count;
+          x = y = count = 0;
+          for (int j = 0; j < 20; j++) {
+            for (int k = 0; k < 20; k++) {
+              if (count++ == pos) {
+                x = j;
+                y = k;
+              }
+            }
+          }
+          if (d.map[x][y] != -1) {
+            i--;
+            continue;
+          }
+          d.makeCreature(&best, (dir + 3) % 4, x, y);
+        }
+        for (int i = 0; i < 10; i++) {
+          int pos = rand() % 400;
+          int dir = rand() % 4;
+          int x, y, count;
+          x = y = count = 0;
+          for (int j = 0; j < 20; j++) {
+            for (int k = 0; k < 20; k++) {
+              if (count++ == pos) {
+                x = j;
+                y = k;
+              }
+            }
+          }
+          if (d.map[x][y] != -1) {
+            i--;
+            continue;
+          }
+          d.makeCreature(&trap, (dir + 3) % 4, x, y);
+        }
+
+
+        for (int i = 0; i <= 1000; i++) {
+          if (i % 100 == 0)
+            cout << d.drawMap();
+
+          d.updateMap();
+        }
+
+        int numB = 0;
+        int numR = 0;
+        for (int i = 0; i < 20; i++) {
+          for (int j = 0; j < 20; j++) {
+            if (d.map[i][j] != -1 && d.creatureList[d.map[i][j]].spec->image == 'b')
+              numB++;
+            if (d.map[i][j] != -1 && d.creatureList[d.map[i][j]].spec->image == 't')
+              numR++;
+          }
+        }
+        cout << endl << "number of best: " << numB << endl;
+        cout << endl << "number of trap: " << numR << endl << endl;
 
         }
     catch (const invalid_argument&) {
