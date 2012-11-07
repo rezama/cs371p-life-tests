@@ -112,13 +112,28 @@ int main () {
     // ----
     // best
     // ----
-    //TODO
+    /*
+    0 if enemy 7
+    1 if wall 3
+    2 if empty 5
+    3 left
+    4 go 0
+    5 hop
+    6 go 0
+    7 infect
+    8 go 0
+
+     */
     Species best("best");
-    best.add(IF_EMPTY,2);
-    best.add(INFECT);
+    best.add(IF_ENEMY,7);
+    best.add(IF_WALL,3);
+    best.add(IF_EMPTY,5);
     best.add(LEFT);
     best.add(GO,0);
-
+    best.add(HOP);
+    best.add(GO,0);
+    best.add(INFECT);
+    best.add(GO,0);
 
     // ----------
     // darwin 8x8
