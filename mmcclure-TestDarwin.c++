@@ -366,9 +366,9 @@ struct TestDarwin : CppUnit::TestFixture {
             srand(0);
             Grid s = Grid(2, 2);
             s.randPlace(FOOD, 4);
-            CPPUNIT_ASSERT(s._world._m[0][0]._speciesID == FOOD);
+            CPPUNIT_ASSERT(s._world._m[0][0]._speciesID == NO_SPECIES);
             CPPUNIT_ASSERT(s._world._m[0][1]._speciesID == FOOD);
-            CPPUNIT_ASSERT(s._world._m[1][0]._speciesID == NO_SPECIES);
+            CPPUNIT_ASSERT(s._world._m[1][0]._speciesID == FOOD);
             CPPUNIT_ASSERT(s._world._m[1][1]._speciesID == FOOD);
         } catch (const invalid_argument&) {
             CPPUNIT_ASSERT(false);
