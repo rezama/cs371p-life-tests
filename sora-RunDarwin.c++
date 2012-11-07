@@ -6,7 +6,7 @@
 
 /*
 To run the program:
-    % g++ -pedantic -std=c++0x -Wall RunCollatz.c++ -o RunCollatz.c++.app
+    % g++ -pedantic -std=c++0x -Wall RunDarwin.c++ -o RunDarwin.c++.app
     % valgrind RunDarwin.c++.app > RunDarwin.out
 
 To configure Doxygen:
