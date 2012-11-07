@@ -193,8 +193,10 @@ int main() {
     trap.addInstruction("infect");
     trap.addInstruction("go 0");
 
-    Species* spec_array[] = { &food, &hopper, &rover, &trap };
-//    Species* spec_array[] = { &food, &hopper, &rover, &trap, &best };
+    Species best("best");
+    addBestInstructions(best);
+
+    Species* spec_array[] = { &food, &hopper, &rover, &trap, &best };
 
     // ----------
     // darwin 8x8
@@ -594,6 +596,22 @@ int main() {
          Best MUST outnumber ALL other species for the bonus pts.
          Print every 100th grid.
          */
+        srand(0);
+        World w(72, 72);
+
+        for (int i = 0; i < 5; ++i) {
+            for (int j = 0; j < 10; ++j) {
+                int pos = rand() % (72 * 72);
+                w.addCreature(Coordinate(pos / 72, pos % 72),
+                              Creature(*(spec_array[i]), rand() % 4));
+            }
+        }
+
+        w.display(cout);
+        for (int i = 0; i < 1000; i += 100) {
+            w.execute(100);
+            w.display(cout);
+        }
     } catch (const invalid_argument&) {
         assert(false);
     } catch (const out_of_range&) {
