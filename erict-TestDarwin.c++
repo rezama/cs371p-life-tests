@@ -270,7 +270,7 @@ struct TestDarwin : CppUnit::TestFixture {
       Species s(v1, v2, 'a');
       d.makeCreature(&s, 0, 0, 0);
       string str1 = d.drawMap();
-      string str2 = "Turn = 0.\n  0\n0 a\n";
+      string str2 = "Turn = 0.\n  0\n0 a\n\n";
       CPPUNIT_ASSERT(str1.compare(str2) == 0);
     }
 
@@ -308,7 +308,7 @@ struct TestDarwin : CppUnit::TestFixture {
       str2 += "6 ..........\n";
       str2 += "7 ..........\n";
       str2 += "8 ..........\n";
-      str2 += "9 ..........\n";
+      str2 += "9 ..........\n\n";
       CPPUNIT_ASSERT(str1.compare(str2) == 0);
     }
 
