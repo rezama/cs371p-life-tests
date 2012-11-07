@@ -131,21 +131,17 @@ int main () {
     // Best
     // -----
     /*
-     0: if_enemy 13
-     1: if_empty 11
-     2: left
-     3: if_wall 7
-     4: hop
+     0: if_enemy 9
+     1: if_empty 7
+     2: if_random 5
+     3: left
+     4: go 0
      5: left
      6: go 0
-     7: left
-     8: if_enemy 13
-     9: left
-     10: go 0
-     11: hop
-     12: go 0
-     13: infect
-     14: go 0
+     7: hop
+     8: go 0
+     9: infect
+    10: go 0
     */
     
     Specie best("best");
