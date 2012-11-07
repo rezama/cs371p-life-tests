@@ -147,7 +147,7 @@ int main () {
     best.add_inst("go", 0);
 
     // ----------
-    // darwin 8x8
+    // #1 darwin 8x8
     // ----------
 
     try {
@@ -179,7 +179,7 @@ int main () {
         assert(false);}
 
     // ----------
-    // darwin 7x9
+    // #2 darwin 7x9
     // ----------
 
     try {
@@ -207,7 +207,7 @@ int main () {
         assert(false);}
     
     // ------------
-    // darwin 72x72
+    // #3 darwin 72x72
     // ------------
 
     species* spec_array[] = { &food, &hopper, &rover, &trap, &best };
@@ -250,7 +250,7 @@ int main () {
         assert(false);}
 
     // ------------
-    // darwin 72x72
+    // #4 darwin 72x72
     // with best
     // ------------
 
@@ -289,7 +289,7 @@ int main () {
         assert(false);}
  
     // ----------
-    // darwin 1x1
+    // #5 darwin 1x1
     // ----------
     
     try {
@@ -304,7 +304,7 @@ int main () {
 
     
     // ----------
-    // darwin 1x1
+    // #6 darwin 1x1
     // ----------
     
     try {
@@ -319,7 +319,7 @@ int main () {
         assert(false);}
     
     // ----------
-    // darwin 4x4
+    // #7 darwin 4x4
     // ----------
     
     try {
@@ -338,7 +338,7 @@ int main () {
     
     
     // ----------
-    // darwin 4x4
+    // #8 darwin 4x4
     // ----------
     
     try {
@@ -358,7 +358,7 @@ int main () {
     
     
     // ----------
-    // darwin 2x2
+    // #9 darwin 2x2
     // ----------
     
     try {
@@ -378,7 +378,7 @@ int main () {
     
     
     // ----------
-    // darwin 1x10
+    // #10 darwin 1x10
     // ----------
     
     try {
@@ -399,7 +399,7 @@ int main () {
     
     
     // -----------------
-    // #2 darwin 3x1
+    // #11 darwin 3x1
     // -----------------
     try {
         cout << "*** Darwin 3x1 ***" << endl;
@@ -417,7 +417,7 @@ int main () {
     
     
     // -----------------
-    // #7 darwin 3x9
+    // #12 darwin 3x9
     // -----------------
     try {
         cout << "*** Darwin 3x9 ***" << endl;
