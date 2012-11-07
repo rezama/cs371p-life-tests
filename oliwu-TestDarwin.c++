@@ -334,55 +334,6 @@ struct TestDarwin : CppUnit::TestFixture {
     CPPUNIT_ASSERT(r[0] == a && r[1] == a && r[2] == a && r[3] == a);
   }
 
-  // ------
-  // gameon
-  // ------
-
-  void test_master_gameon_roadblock () {
-    srand(0);
-    std::ostringstream w;
-    Master k = Master();
-    k.new_game (2, 3);
-    k.spawn_creature (TESTCW, EAST, 0, 0);
-    k.spawn_creature (FOOD, NORTH, 0, 2);
-    std::string a = "Turn = 0.\n  012\n0 *.f\n1 ...\n\nTurn = 1.\n  012\n0 .*f\n1 ...\n\nTurn = 2.\n  012\n0 .*f\n1 ...\n\n";
-    k.gameon(w, 2);
-    std::string r = w.str();
-    CPPUNIT_ASSERT(a.compare(r) == 0);
-  }
-
-  void test_master_gameon_itsatrap () {
-    srand(0);
-    std::ostringstream w;
-    Master k = Master();
-    k.new_game (2, 2);
-    k.spawn_creature (FOOD, NORTH, 0, 1);
-    k.spawn_creature (TRAP, WEST, 0, 0);
-    std::string a = "Turn = 0.\n  01\n0 tf\n1 ..\n\nTurn = 2.\n  01\n0 tf\n1 ..\n\nTurn = 4.\n  01\n0 tt\n1 ..\n\n";
-    k.gameon(w, 4, 2);
-    std::string r = w.str();
-    CPPUNIT_ASSERT(a.compare(r) == 0);
-    CPPUNIT_ASSERT(true);
-  }
-
-  void test_master_gameon_LRUDorder () {
-    srand(0);
-    std::ostringstream w;
-    Master k = Master();
-    k.new_game (3, 8);
-    k.spawn_creature (HOPPER, WEST, 0, 6);
-    k.spawn_creature (HOPPER, EAST, 1, 0);
-    k.spawn_creature (HOPPER, EAST, 2, 2);
-    k.spawn_creature (ROVER, WEST, 0, 7);
-    k.spawn_creature (ROVER, WEST, 1, 7);
-    k.spawn_creature (ROVER, EAST, 2, 0);
-    std::string a = "Turn = 0.\n  01234567\n0 ......hr\n1 h......r\n2 r.h.....\n\nTurn = 8.\n  01234567\n0 rr......\n1 ........\n2 ..rr..rr\n\n";
-    k.gameon(w, 8, 8);
-    std::string r = w.str();
-    CPPUNIT_ASSERT(a.compare(r) == 0);
-    CPPUNIT_ASSERT(true);
-  }
-
 
   CPPUNIT_TEST_SUITE(TestDarwin);
 
@@ -413,9 +364,6 @@ struct TestDarwin : CppUnit::TestFixture {
   CPPUNIT_TEST(test_master_ping_enemy);
   CPPUNIT_TEST(test_master_ping_friend);
   CPPUNIT_TEST(test_master_ping_empty);
-  CPPUNIT_TEST(test_master_gameon_roadblock);
-  CPPUNIT_TEST(test_master_gameon_itsatrap);
-  CPPUNIT_TEST(test_master_gameon_LRUDorder);
   
   CPPUNIT_TEST_SUITE_END();
 };
