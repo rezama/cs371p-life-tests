@@ -11,7 +11,7 @@
 /*
 To run the program:
     % g++ -pedantic -std=c++0x -Wall RunDarwin.c++ -o RunDarwin
-    % valgrind RunDarwin.c++ > RunDarwin.out
+    % valgrind RunDarwin >& RunDarwin.out
 
 To configure Doxygen:
     doxygen -g
