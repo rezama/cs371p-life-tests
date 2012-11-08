@@ -1,0 +1,541 @@
+/**
+ * To test the program:
+ *     g++ -ansi -pedantic -lcppunit -ldl -Wall TestDarwin.c++ -o TestDarwin.app
+ *     valgrind TestDarwin.app >& TestDarwin.out
+ */
+
+// --------
+// includes
+// --------
+
+#include "cppunit/extensions/HelperMacros.h" // CPPUNIT_TEST, CPPUNIT_TEST_SUITE, CPPUNIT_TEST_SUITE_END
+#include "cppunit/TestFixture.h"             // TestFixture
+#include "cppunit/TextTestRunner.h"          // TestRunner
+
+#define private public
+#define protected public
+#define class struct
+#include "Darwin.h"
+#include <cstdlib>
+
+// -------------
+// TestDarwin
+// -------------
+
+struct TestDarwin : CppUnit::TestFixture {
+	
+	//-------------------------------------------------------
+	//		INSTRUCTION TESTING
+	//-------------------------------------------------------
+	void test_instruction1 () {
+		Instruction i("hop");
+		CPPUNIT_ASSERT(i.to_string().compare("hop") == 0);
+		CPPUNIT_ASSERT(i.gotoLine() == -1);
+	}
+	
+	void test_instruction2 () {
+		Instruction i("go", 2);
+		CPPUNIT_ASSERT(i.to_string().compare("go") == 0);
+		CPPUNIT_ASSERT(i.gotoLine() == 2);
+	}
+	
+	void test_instruction3 () {
+		Instruction i("go", 1);
+		Instruction j("go", 1);
+		
+		CPPUNIT_ASSERT(i.to_string().compare(j.to_string()) == 0);
+		CPPUNIT_ASSERT(i.gotoLine() == j.gotoLine());
+		CPPUNIT_ASSERT(&i != &j);
+	}
+
+	//-------------------------------------------------------
+	//		SPECIES TESTING
+	//-------------------------------------------------------
+
+	void test_species_constructor1 () {
+		char c = '.';
+		Species s;
+		CPPUNIT_ASSERT(c == s._c);
+		CPPUNIT_ASSERT(s.instructLength() == 0);
+	}
+
+	void test_species_constructor2 () {
+		char c = 'f';
+		Species s('f');
+		CPPUNIT_ASSERT(c == s._c);
+		CPPUNIT_ASSERT(s.instructLength() == 0);
+	}
+
+	void test_species_constructor3 () {
+		Species s('p');
+		Species t('u');
+		CPPUNIT_ASSERT(s._c != t._c);
+		CPPUNIT_ASSERT(s.instructLength() == t.instructLength());
+	}
+	
+	void test_species_addInstruction1 () {
+		Species f('f');
+		
+		f.addAction("hop");
+		CPPUNIT_ASSERT(f.instructLength() == 1);
+		
+		f.addAction("left");
+		f.addAction("right");
+		CPPUNIT_ASSERT(f.instructLength() == 3);
+		CPPUNIT_ASSERT(f._ins[1].to_string().compare("left") == 0);
+	}
+	
+	void test_species_addInstruction2 () {
+		Species t('t');
+		t.addAction("hop");
+		t.addAction("left");
+		t.addAction("right");
+		t.addAction("infect");
+		
+		t.addControl("go", 0);
+		t.addControl("if_empty", 1);
+		t.addControl("if_wall", 2);
+		t.addControl("if_random", 3);
+		
+		CPPUNIT_ASSERT(t.instructLength() == 8);
+		CPPUNIT_ASSERT(t._ins[5].to_string().compare("if_empty") == 0);
+		CPPUNIT_ASSERT(t._ins[5]._gotoLine == 1);
+	}
+	
+	void test_species_addInstruction3 () {
+		Species t('t');
+		CPPUNIT_ASSERT_THROW(t.addAction("break"), std::invalid_argument);
+		
+	}
+
+	void test_species_tile1 () {
+		Species s;
+		CPPUNIT_ASSERT(s.tile() == '.');
+	}
+
+	void test_species_tile2 () {
+		Species s('a');
+		CPPUNIT_ASSERT(s.tile() == 'a');
+	}
+
+	void test_species_tile3 () {
+		Species s('x');
+		Species t('y');
+		CPPUNIT_ASSERT(s.tile() == 'x');
+		CPPUNIT_ASSERT(t.tile() == 'y');
+		CPPUNIT_ASSERT(s.tile() != t.tile());
+	}
+
+	void test_species_getInstruction1 () {
+		Species t('t');
+		t.addAction("hop");
+		t.addControl("go", 0);
+
+		Instruction i = t.getInstruction(0);
+		CPPUNIT_ASSERT(i.to_string().compare("hop") == 0);
+		CPPUNIT_ASSERT(i.gotoLine() == -1);
+
+		i = t.getInstruction(1);
+		CPPUNIT_ASSERT(i.to_string().compare("go") == 0);
+		CPPUNIT_ASSERT(i.gotoLine() == 0);
+	}
+
+	void test_species_getInstruction2 () {
+		Species t('t');
+		Species u('u');
+
+		t.addAction("hop");
+		t.addControl("go", 0);
+		CPPUNIT_ASSERT(t.instructLength() == 2);
+
+		u.addAction("left");
+		u.addAction("hop");
+		u.addControl("go", 0);
+		CPPUNIT_ASSERT(u.instructLength() == 3);
+
+		Instruction i = t.getInstruction(0);
+		Instruction j = u.getInstruction(1);
+		CPPUNIT_ASSERT(i.to_string().compare(j.to_string()) == 0);
+	}
+
+	void test_species_getInstruction3 () {
+		Species t('t');
+		t.addAction("hop");
+		t.addAction("left");
+		t.addControl("if_empty", 0);
+		CPPUNIT_ASSERT_THROW(t.getInstruction(3), std::out_of_range);
+		CPPUNIT_ASSERT_THROW(t.getInstruction(-1), std::out_of_range);
+	}
+
+
+
+	//-------------------------------------------------------
+	//		CREATURE TESTING
+	//-------------------------------------------------------
+	
+	void test_creature_constructor1 () {
+		Grid g(4,4);
+		Species f('f');
+		
+		//creating a creature on it's own is pretty useless
+		Creature c(g, f);
+		CPPUNIT_ASSERT(c._g == &g);
+		CPPUNIT_ASSERT(c._s == &f);
+		CPPUNIT_ASSERT(c._d == 0);
+		CPPUNIT_ASSERT(c._r == 0);
+		CPPUNIT_ASSERT(c._c == 0);
+		CPPUNIT_ASSERT(c._pc == 0);
+		CPPUNIT_ASSERT(c._uc == 0);
+	}
+	
+	void test_creature_constructor2 () {
+		Grid g(4,4);
+		Species t('t');
+		
+		Creature c = *(g.place(t, 3, 1, 0));
+		CPPUNIT_ASSERT(c._d == 0);
+		Creature d = *(g.place(t, 2, 3, 1));
+		CPPUNIT_ASSERT(d._d == 1);
+		
+		CPPUNIT_ASSERT(c._g == d._g);
+		CPPUNIT_ASSERT(c._s == d._s);
+		CPPUNIT_ASSERT(c._d != d._d);
+		CPPUNIT_ASSERT(c._r != d._r);
+		CPPUNIT_ASSERT(c._c != d._c);
+	}
+	
+	void test_creature_constructor3 () {
+		Grid g(5,5);
+		Species s('c');
+		Creature c(g, s, 3, 4, 5);
+		CPPUNIT_ASSERT(c._r == 3);
+		CPPUNIT_ASSERT(c._c == 4);
+		CPPUNIT_ASSERT(c._d == 1);
+		CPPUNIT_ASSERT('c' == c.tile());
+	}
+	
+	void test_creature_tile1 () {
+		Grid g(4,4);
+		Species t('t');
+		
+		Creature c(g, t);
+		CPPUNIT_ASSERT(c.tile() == t.tile());
+	}
+	
+	void test_creature_tile2 () {
+		Grid g(4,4);
+		Species t('t');
+		
+		Creature c(g, t);
+		Creature d(g, t);
+		CPPUNIT_ASSERT(c.tile() == d.tile());
+	}
+
+	void test_creature_tile3 () {
+		Grid g(8,8);
+		Species r('r');
+
+		Creature* c = g.place(r, 4, 3, 3);
+		CPPUNIT_ASSERT(c->_s == &r);
+		CPPUNIT_ASSERT(c->tile() == r.tile());
+		CPPUNIT_ASSERT(&(g.get(4, 3)) == c);
+		CPPUNIT_ASSERT(g.get(4, 3).tile() == c->tile());
+	}
+	
+	void test_creature_direction1 () 
+	{
+		Grid g(4,4);
+		Species s('s');
+		
+		Creature c(g, s, 0, 0, 1);
+		
+		c.left();
+		CPPUNIT_ASSERT(c._d == 0);
+		
+		c.right();
+		CPPUNIT_ASSERT(c._d == 1);
+	}
+
+	void test_creature_direction2 () 
+	{
+		Grid g(4,4);
+		Species s('s');
+		
+		Creature c(g, s, 0, 0, 3);
+		c.left();
+		c.left();
+		CPPUNIT_ASSERT(c._d == 1);
+		
+		c.left();
+		c.right();
+		CPPUNIT_ASSERT(c._d == 1);
+	}
+
+	void test_creature_direction3 () 
+	{
+		Grid g(1,1);
+		Species s('s');
+		
+		Creature* c = g.place(s, 0, 0, 3);
+		CPPUNIT_ASSERT(c->_r == 0);
+		CPPUNIT_ASSERT(c->_c == 0);
+		c->right();
+		CPPUNIT_ASSERT(c->_d == 0);
+		
+		c->left();
+		CPPUNIT_ASSERT(c->_d == 3);
+	}
+
+	void test_creature_hop1 () {
+		Grid g(6,6);
+		Species h('h');
+		h.addAction("hop");
+
+		Creature* c_ptr = g.place(h, 2, 1, 1);
+		CPPUNIT_ASSERT(c_ptr->_r == 2);
+		CPPUNIT_ASSERT(c_ptr->_c == 1);
+		CPPUNIT_ASSERT(c_ptr->_d == 1);
+		//g.print();
+		
+		c_ptr->hop();
+		CPPUNIT_ASSERT(c_ptr->_r == 1);
+		CPPUNIT_ASSERT(c_ptr->_c == 1);
+		CPPUNIT_ASSERT(c_ptr->_d == 1);
+		//g.print();
+	}
+	
+	void test_creature_hop2 () {
+		Grid g(4, 4);
+		Species t('t');
+		Species s('s');
+
+		Creature* a = g.place(t, 1, 1, 2);
+		Creature* b = g.place(s, 1, 2, 1);
+		CPPUNIT_ASSERT(a->_r == 1);
+		CPPUNIT_ASSERT(a->_c == 1);
+		CPPUNIT_ASSERT(a->_d == 2);
+		CPPUNIT_ASSERT(b->_r == 1);
+		CPPUNIT_ASSERT(b->_c == 2);
+		CPPUNIT_ASSERT(b->_d == 1);
+		//g.print();
+
+		a->hop();
+		CPPUNIT_ASSERT(a->_r == 1);
+		CPPUNIT_ASSERT(a->_c == 1);
+		CPPUNIT_ASSERT(a->_d == 2);
+		//g.print();
+
+		b->hop();
+		CPPUNIT_ASSERT(b->_r == 0);
+		CPPUNIT_ASSERT(b->_c == 2);
+		CPPUNIT_ASSERT(b->_d == 1);
+		//g.print();
+
+		a->hop();
+		CPPUNIT_ASSERT(a->_r == 1);
+		CPPUNIT_ASSERT(a->_c == 2);
+		CPPUNIT_ASSERT(a->_d == 2);
+		//g.print();
+	}
+
+
+
+
+
+	//-------------------------------------------------------
+	//		GRID TESTING
+	//-------------------------------------------------------
+
+	void test_grid_construct1 () {
+		
+		Grid g(3, 4);
+		CPPUNIT_ASSERT(g.numRows() == 3);
+		CPPUNIT_ASSERT(g.numCols() == 4);
+		
+		CPPUNIT_ASSERT(g._m[0][0] == 0);
+		CPPUNIT_ASSERT(g._m[0][1] == 0);
+		CPPUNIT_ASSERT(g._m[0][2] == 0);
+		CPPUNIT_ASSERT(g._m[0][3] == 0);
+		CPPUNIT_ASSERT(g._m[1][0] == 0);
+		CPPUNIT_ASSERT(g._m[1][1] == 0);
+		CPPUNIT_ASSERT(g._m[1][2] == 0);
+		CPPUNIT_ASSERT(g._m[1][3] == 0);
+		CPPUNIT_ASSERT(g._m[2][0] == 0);
+		CPPUNIT_ASSERT(g._m[2][1] == 0);
+		CPPUNIT_ASSERT(g._m[2][2] == 0);
+		CPPUNIT_ASSERT(g._m[2][3] == 0);
+	}
+	
+	void test_grid_construct2 () {
+		int n = 8;
+		Grid g (n, n);
+		CPPUNIT_ASSERT(g.numRows() == 8);
+		CPPUNIT_ASSERT(g.numCols() == 8);
+		CPPUNIT_ASSERT(g._m[0][0] == 0);
+		CPPUNIT_ASSERT(g._m[4][5] == 0);
+		CPPUNIT_ASSERT(g._m[7][7] == 0);
+	}
+	
+	void test_grid_construct3 () {
+		CPPUNIT_ASSERT_THROW(Grid g(-1, 5), std::out_of_range);
+	}
+
+	void test_grid_get1 () {
+		Grid g(3, 4);
+		Creature* c_ptr = &g.get(1, 2);
+		CPPUNIT_ASSERT(c_ptr == 0);
+	}
+	
+	void test_grid_get2 () {
+		Grid g(7, 9);
+		Species f('f');
+		Creature& c = *g.place(f, 3, 4, 0);
+		Creature* c_ptr = &g.get(3, 4);
+		
+		CPPUNIT_ASSERT(c_ptr != 0);
+		CPPUNIT_ASSERT(c_ptr == &c);
+	}
+	
+	void test_grid_place1 () {
+		Species food('f');
+		Grid g(8, 8);
+		
+		Creature* c = g.place(food, 0, 0);
+		
+		CPPUNIT_ASSERT(c->_g == &g);
+		CPPUNIT_ASSERT(c->_s == &food);
+		CPPUNIT_ASSERT(c->_d == 0);
+		CPPUNIT_ASSERT(c->_r == 0);
+		CPPUNIT_ASSERT(c->_c == 0);
+		
+		
+	}
+	
+	void test_grid_place2 () {
+		Species food('f');
+		Grid g(8, 8);
+		
+		g.place(food, 0, 1);
+		g.place(food, 1, 1);
+		g.place(food, 7, 7);
+		
+		CPPUNIT_ASSERT(food.tile() == 'f');
+		CPPUNIT_ASSERT(g._m[0][1]->tile() == food.tile());
+		CPPUNIT_ASSERT(g._m[1][1]->tile() == food.tile());
+		CPPUNIT_ASSERT(g._m[7][7]->tile() == 'f');
+	}
+	
+
+	void test_grid_print1 () {
+		Grid g(4, 4);
+
+		/* uncomment these two lines to see the print
+		 * messes up Valgrinds output format otherwise
+		 * Should look like:
+		 * 
+		 * Turn = 0.
+		 *   0123
+		 * 0 ....
+		 * 1 ....
+		 * 2 ....
+		 * 3 ....
+		 * 
+		 */
+		//std::cout << std::endl;
+		//g.print();
+	}
+
+	void test_grid_print2 () {
+		Species f('f');
+		Grid g(9, 9);
+
+		g.place(f, 0, 0);
+		g.place(f, 1, 1);
+		g.place(f, 7, 7);
+
+		/* uncomment these two lines to see the print
+		 * messes up Valgrinds output format otherwise
+		 * Should look like:
+		 * 
+		 * Turn = 0.
+		 *   01234567
+		 * 0 f.......
+		 * 1 .f......
+		 * 2 ........
+		 * 3 ........
+		 * 4 ........
+		 * 5 ........
+		 * 6 ........
+		 * 7 .......f
+		 * 
+		 */
+		//std::cout << std::endl;
+		//g.print();
+	}
+
+    // -----
+    // suite
+    // -----
+
+    CPPUNIT_TEST_SUITE(TestDarwin);
+    
+	CPPUNIT_TEST(test_instruction1);
+	CPPUNIT_TEST(test_instruction2);
+	CPPUNIT_TEST(test_instruction3);
+
+	CPPUNIT_TEST(test_species_constructor1);
+	CPPUNIT_TEST(test_species_constructor2);
+	CPPUNIT_TEST(test_species_constructor3);
+	CPPUNIT_TEST(test_species_addInstruction1);
+	CPPUNIT_TEST(test_species_addInstruction2);
+	CPPUNIT_TEST(test_species_addInstruction3);
+	CPPUNIT_TEST(test_species_tile1);
+	CPPUNIT_TEST(test_species_tile2);
+	CPPUNIT_TEST(test_species_tile3);
+	CPPUNIT_TEST(test_species_getInstruction1);
+	CPPUNIT_TEST(test_species_getInstruction2);
+	CPPUNIT_TEST(test_species_getInstruction3);
+	
+	CPPUNIT_TEST(test_creature_constructor1);
+	CPPUNIT_TEST(test_creature_constructor2);
+	CPPUNIT_TEST(test_creature_constructor3);
+	CPPUNIT_TEST(test_creature_tile1);
+	CPPUNIT_TEST(test_creature_tile2);
+	CPPUNIT_TEST(test_creature_tile3);
+	CPPUNIT_TEST(test_creature_direction1);
+	CPPUNIT_TEST(test_creature_direction2);
+	CPPUNIT_TEST(test_creature_direction3);
+	CPPUNIT_TEST(test_creature_hop1);
+	CPPUNIT_TEST(test_creature_hop2);
+
+	CPPUNIT_TEST(test_grid_construct1);
+	CPPUNIT_TEST(test_grid_construct2);
+	CPPUNIT_TEST(test_grid_get1);
+	CPPUNIT_TEST(test_grid_get2);
+	CPPUNIT_TEST(test_grid_place1);
+	CPPUNIT_TEST(test_grid_place2);
+	CPPUNIT_TEST(test_grid_print1);
+	CPPUNIT_TEST(test_grid_print2);
+
+    CPPUNIT_TEST_SUITE_END();
+};
+
+
+
+// ----
+// main
+// ----
+
+int main () {
+    using namespace std;
+    ios_base::sync_with_stdio(false);    // turn off synchronization with C I/O
+    cout << "TestDarwin.c++" << endl;
+
+    CppUnit::TextTestRunner tr;
+
+    tr.addTest(TestDarwin::suite());
+
+    tr.run();
+
+    cout << "Done." << endl;
+    return 0;}
