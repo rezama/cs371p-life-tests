@@ -673,6 +673,7 @@ int main () {
     
     try{
         cout << "*** ccheng Rover Darwin***" << endl;
+        srand(0);
         Creature r(rover,1);
         Grid g(5,5);
         g.put(r,0,3);
@@ -710,7 +711,7 @@ int main () {
         cout << "*** SORA Darwin 4x4 ***" << endl;
         srand(0);
         Grid g(4,4);
-        
+        srand(0);       
         Creature r1(rover,3);
         g.put(r1,0,0);
         
@@ -738,7 +739,7 @@ int main () {
         cout << "*** SORA Darwin 3x9 ***" << endl;
         srand(0);
         Grid g(3,9);
-        
+        srand(0);        
         Creature h1(hopper,3);
         g.put(h1,0,0);
         
@@ -789,6 +790,8 @@ int main () {
     try{
     
         cout << "*** ccheng 1 x 1***" << endl;
+        srand(0);
+                
         Creature r(rover,1);
         Grid g(1,1);
         g.put(r,0,0);
@@ -809,7 +812,7 @@ int main () {
         cout << "*** ccheng 9 x 9***" << endl;
 
         Grid g(9,9);
-
+        srand(0);
         Creature r1(rover,1);  
         g.put(r1,0,0); 
         Creature r2(rover,1);

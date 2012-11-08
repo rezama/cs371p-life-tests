@@ -57,7 +57,7 @@ int main () {
         MASTER.spawn_creature (HOPPER, SOUTH, 4, 4); // Hopper, facing south, at (4, 4)
         MASTER.spawn_creature (HOPPER, WEST, 4, 3); // Hopper, facing west,  at (4, 3)
         MASTER.spawn_creature (FOOD, NORTH, 7, 7); // Food,   facing north, at (7, 7)
-        MASTER.gameon(cout, 8); // Simulate 5 moves. Print every grid.
+        MASTER.execute(cout, 8); // Simulate 5 moves. Print every grid.
         
         }
     catch (const invalid_argument&) {
@@ -77,7 +77,7 @@ int main () {
         MASTER.spawn_creature (HOPPER, EAST, 3, 2); // Hopper, facing east, at (3, 2)
         MASTER.spawn_creature (ROVER, NORTH, 5, 4); // Rover, facing north,  at (5, 4)
         MASTER.spawn_creature (TRAP, WEST, 6, 8); // Trap, facing west, at (6, 8)
-        MASTER.gameon(cout, 5); // Simulate 5 moves. Print every grid.
+        MASTER.execute(cout, 5); // Simulate 5 moves. Print every grid.
         }
     catch (const invalid_argument&) {
         assert(false);}
@@ -131,7 +131,7 @@ int main () {
           MASTER.spawn_creature (TRAP, d, x, y);
         }
         // Simulate 1000 moves. Print every 100th grid.
-        MASTER.gameon(cout, 1000, 100);          
+        MASTER.execute(cout, 1000, 100);          
  
         int count[] = {0,0,0,0};
         // FOOD
@@ -209,7 +209,7 @@ int main () {
           MASTER.spawn_creature (BEST, d, x, y);
         }
         // Simulate 1000 moves. Print every 100th grid.
-        MASTER.gameon(cout, 1000, 100);          
+        MASTER.execute(cout, 1000, 100);          
 
 
         int count[] = {0,0,0,0,0};
@@ -262,7 +262,7 @@ int main () {
           MASTER.spawn_creature (BEST, d, x, y);
         }
         // Simulate 1000 moves. Print every 100th grid.
-        MASTER.gameon(cout, 1000, 1000);          
+        MASTER.execute(cout, 1000, 1000);          
 
 
         int count[] = {0,0,0,0,0};
@@ -315,7 +315,7 @@ int main () {
           MASTER.spawn_creature (BEST, d, x, y);
         }
         // Simulate 1000 moves. Print every 100th grid.
-        MASTER.gameon(cout, 500, 500);          
+        MASTER.execute(cout, 500, 500);          
 
 
         int count[] = {0,0,0,0,0};
@@ -368,7 +368,7 @@ int main () {
           MASTER.spawn_creature (BEST, d, x, y);
         }
         // Simulate 1000 moves. Print every 100th grid.
-        MASTER.gameon(cout, 500, 500);          
+        MASTER.execute(cout, 500, 500);          
 
 
         int count[] = {0,0,0,0,0};
@@ -421,7 +421,7 @@ int main () {
           MASTER.spawn_creature (ROVER, d, x, y);
         }
         // Simulate 1000 moves. Print every 100th grid.
-        MASTER.gameon(cout, 500, 500);          
+        MASTER.execute(cout, 500, 500);          
 
 
         int count[] = {0,0,0,0,0};
@@ -474,7 +474,7 @@ int main () {
           MASTER.spawn_creature (BEST, d, x, y);
         }
         // Simulate 1000 moves. Print every 100th grid.
-        MASTER.gameon(cout, 500, 500);          
+        MASTER.execute(cout, 500, 500);          
 
 
         int count[] = {0,0,0,0,0};
@@ -554,7 +554,7 @@ int main () {
           MASTER.spawn_creature (BEST, d, x, y);
         }
         // Simulate 1000 moves. Print every 100th grid.
-        MASTER.gameon(cout, 500, 500);          
+        MASTER.execute(cout, 500, 500);          
 
 
         int count[] = {0,0,0,0,0};
