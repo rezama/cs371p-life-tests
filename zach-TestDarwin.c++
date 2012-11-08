@@ -186,7 +186,7 @@ struct TestDarwin : CppUnit::TestFixture {
     controller.makeGrid(10, 10);
     controller.placeCreature(&test, NORTH, 4, 2);
     controller.run(5, 0);
-    CPPUNIT_ASSERT(controller.grid[0][2] == 0);
+    CPPUNIT_ASSERT(controller.grid[0][1] == 0);
   }
 
   void controller_run_3() {
