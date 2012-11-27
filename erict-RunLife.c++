@@ -80,21 +80,24 @@ int main () {
       getDimensions(read, rows, cols);
       Life<ConwayCell> lifers(rows, cols);
       readLife(read, lifers, rows, cols);
-      cout << lifers.drawLife();
+      ofstream file ("RunLifeConway.out");
+      if (file.is_open()) {
+      file << lifers.drawLife();
       for (int i = 0; i < 283; i++) {
         lifers.runLife();
       }
-      cout << lifers.drawLife();
+      file << lifers.drawLife();
 
       for (int i = 0; i < 40; i++) {
         lifers.runLife();
       }
-      cout << lifers.drawLife();
+      file << lifers.drawLife();
 
       for (int i = 0; i < 2500; i++) {
         lifers.runLife();
       }
-      cout << lifers.drawLife();
+      file << lifers.drawLife();
+    }
     }
     catch (const invalid_argument&) {
         assert(false);}
@@ -138,25 +141,22 @@ int main () {
       getDimensions(read, rows, cols);
       Life<Cell> lifers(rows, cols, new FredkinCell());
       readLife(read, lifers, rows, cols);
-      ofstream file ("RunLifeCell.out");
-      if (file.is_open()) {
-        file << lifers.drawLife();
-        lifers.runLife();
-        file << lifers.drawLife();
-        lifers.runLife();
-        file << lifers.drawLife();
-        lifers.runLife();
-        file << lifers.drawLife();
-        lifers.runLife();
-        file << lifers.drawLife();
-        lifers.runLife();
-        file << lifers.drawLife();
-      }
+      cout << lifers.drawLife();
+      lifers.runLife();
+      cout << lifers.drawLife();
+      lifers.runLife();
+      cout << lifers.drawLife();
+      lifers.runLife();
+      cout << lifers.drawLife();
+      lifers.runLife();
+      cout << lifers.drawLife();
+      lifers.runLife();
+      cout << lifers.drawLife();
     }
     catch (const invalid_argument&) {
-        assert(false);}
+      assert(false);}
     catch (const out_of_range&) {
-        assert(false);}
+      assert(false);}
 
     // ------------------
     // My10x10ConwayTest
