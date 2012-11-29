@@ -90,7 +90,6 @@ int main () {
         life.display(cout, 283+40);
         life.run(2500, 2500);
         life.display(cout, 283+40+2500);
-        */
 
         /*
         read RunLifeConway.in // assume all Conway cells
@@ -102,6 +101,8 @@ int main () {
         Simulate 2500 moves.
         Print grid.
         */
+
+    }
     catch (const invalid_argument&) {
         assert(false);}
     catch (const out_of_range&) {
