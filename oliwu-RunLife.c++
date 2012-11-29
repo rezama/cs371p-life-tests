@@ -28,11 +28,27 @@ To document the program:
 
 #include <cassert>   // assert
 #include <iostream>  // cout, endl
+#include <fstream>
 #include <stdexcept> // invalid_argument, out_of_range
+#include <cstdlib>
 #include <string>
 
 #define private public
 #include "Life.h"
+
+
+template <typename T>
+void print (ofstream& w, Life<T>& life) {
+  w << "\n\nGeneration = " << life._gen << ", Population = " << life._pop << ".";
+
+  for (size_t r = 0; r < life._rows; r++) {
+    w << "\n";
+    for (size_t c = 0; c < life._cols; c++) {
+      w << life._board[r][c].motherfuckingstatus();
+    }
+  }
+}
+
 // ----
 // main
 // ----
@@ -49,14 +65,11 @@ int main () {
         cout << "*** Life<ConwayCell> 109x69 ***" << endl;
         
         // read RunLifeConway.in // assume all Conway cells
-        ifstream file;
-        ofstream myfile;
-        file.open ("RunLifeConway.in");
-        myfile.open ("RunLifeConway.out");
-        int dims[2];
-        dimensions (file, dims);
-
-        Life<ConwayCell> life (dims[0], dims[1], ConwayCell());
+        ifstream file ("RunLifeConway.in");
+        ofstream myfile ("RunLifeConway.out");
+        int rows, cols;
+        file >> rows >> cols;
+        Life<ConwayCell> life (rows, cols, ConwayCell());
 
         string line;
         size_t row = 0;
@@ -73,13 +86,13 @@ int main () {
         file.close();
 
         myfile << "*** Life<ConwayCell> 109x69 ***";
-        life.print (myfile);
+        print (myfile, life);
         life.simulate (283);
-        life.print (myfile);
+        print (myfile, life);
         life.simulate (40);
-        life.print (myfile);
+        print (myfile, life);
         life.simulate (2500);
-        life.print (myfile);
+        print (myfile, life);
         
         myfile.close();
         }
@@ -87,7 +100,7 @@ int main () {
         assert(false);}
     catch (const out_of_range&) {
         assert(false);}
-
+    
     // ------------------
     // Fredkin Cell 20x20
     // ------------------
@@ -95,15 +108,11 @@ int main () {
     try {
         cout << "*** Life<FredkinCell> 20x20 ***" << endl;
         
-        // read RunLifeFredkin.in // assume all Fredkin cells
-        ifstream file;
-        ofstream myfile;
-        file.open ("RunLifeFredkin.in");
-        myfile.open ("RunLifeFredkin.out");
-        int dims[2];
-        dimensions (file, dims);
-
-        Life<FredkinCell> life (dims[0], dims[1], FredkinCell());
+        ifstream file ("RunLifeFredkin.in");
+        ofstream myfile ("RunLifeFredkin.out");
+        int rows, cols;
+        file >> rows >> cols;
+        Life<FredkinCell> life (rows, cols, FredkinCell());
 
         string line;
         size_t row = 0;
@@ -120,11 +129,11 @@ int main () {
         file.close();
 
         myfile << "*** Life<FredkinCell> 20x20 ***";
-        life.print (myfile);
+        print (myfile, life);
         life.simulate (1);
-        life.print (myfile);
+        print (myfile, life);
         life.simulate (1);
-        life.print (myfile);
+        print (myfile, life);
         myfile.close();        
         }
     catch (const invalid_argument&) {
@@ -139,15 +148,11 @@ int main () {
     try {
         cout << "*** Life<Cell> 20x20 ***" << endl;
         
-        // read RunLife.in // assume all Fredkin cells
-        ifstream file;
-        ofstream myfile;
-        file.open ("RunLife.in");
-        myfile.open ("RunLife.out");
-        int dims[2];
-        dimensions (file, dims);
-
-        Life<Cell> life (dims[0], dims[1], new FredkinCell());
+        ifstream file ("RunLife.in");
+        ofstream myfile ("RunLife.out");
+        int rows, cols;
+        file >> rows >> cols;
+        Life<Cell> life (rows, cols, new FredkinCell());
 
         string line;
         size_t row = 0;
@@ -164,10 +169,10 @@ int main () {
         file.close();
 
         myfile << "*** Life<Cell> 20x20 ***";
-        life.print (myfile);
+        print (myfile, life);
         for (int i = 0; i < 5; i++) {
           life.simulate (1);
-          life.print (myfile);
+          print (myfile, life);
         }
         myfile.close(); 
         }
@@ -183,15 +188,11 @@ int main () {
     try {
         cout << "*** Life<ConwayCell> Beacon ***" << endl;
         
-        // read RunLifeConway.in // assume all Conway cells
-        ifstream file;
-        ofstream myfile;
-        file.open ("beacon.in");
-        myfile.open ("beacon.out");
-        int dims[2];
-        dimensions (file, dims);
-
-        Life<ConwayCell> life (dims[0], dims[1], ConwayCell());
+        ifstream file ("beacon.in");
+        ofstream myfile ("beacon.out");
+        int rows, cols;
+        file >> rows >> cols;
+        Life<ConwayCell> life (rows, cols, ConwayCell());
 
         string line;
         size_t row = 0;
@@ -208,13 +209,13 @@ int main () {
         file.close();
 
         myfile << "*** Life<ConwayCell> Beacon ***";
-        life.print (myfile);
+        print (myfile, life);
         life.simulate (1);
-        life.print (myfile);
+        print (myfile, life);
         life.simulate (1);
-        life.print (myfile);
+        print (myfile, life);
         life.simulate (1);
-        life.print (myfile);
+        print (myfile, life);
         
         myfile.close();
         }
@@ -230,15 +231,11 @@ int main () {
     try {
         cout << "*** Life<ConwayCell> Toad ***" << endl;
         
-        // read RunLifeConway.in // assume all Conway cells
-        ifstream file;
-        ofstream myfile;
-        file.open ("toad.in");
-        myfile.open ("toad.out");
-        int dims[2];
-        dimensions (file, dims);
-
-        Life<ConwayCell> life (dims[0], dims[1], ConwayCell());
+        ifstream file ("toad.in");
+        ofstream myfile ("toad.out");
+        int rows, cols;
+        file >> rows >> cols;
+        Life<ConwayCell> life (rows, cols, ConwayCell());
 
         string line;
         size_t row = 0;
@@ -255,13 +252,13 @@ int main () {
         file.close();
 
         myfile << "*** Life<ConwayCell> Toad ***";
-        life.print (myfile);
+        print (myfile, life);
         life.simulate (1);
-        life.print (myfile);
+        print (myfile, life);
         life.simulate (1);
-        life.print (myfile);
+        print (myfile, life);
         life.simulate (1);
-        life.print (myfile);
+        print (myfile, life);
         
         myfile.close();
         }
@@ -278,15 +275,11 @@ int main () {
     try {
         cout << "*** Life<ConwayCell> Glider ***" << endl;
         
-        // read RunLifeConway.in // assume all Conway cells
-        ifstream file;
-        ofstream myfile;
-        file.open ("glider.in");
-        myfile.open ("glider.out");
-        int dims[2];
-        dimensions (file, dims);
-
-        Life<ConwayCell> life (dims[0], dims[1], ConwayCell());
+        ifstream file ("glider.in");
+        ofstream myfile ("glider.out");
+        int rows, cols;
+        file >> rows >> cols;
+        Life<ConwayCell> life (rows, cols, ConwayCell());
 
         string line;
         size_t row = 0;
@@ -303,18 +296,18 @@ int main () {
         file.close();
 
         myfile << "*** Life<ConwayCell> Glider ***";
-        life.print (myfile);
+        print (myfile, life);
         for (int i = 0; i < 4; i++) {
           life.simulate (1);
-          life.print (myfile);
+          print (myfile, life);
         }
         for (int i = 0; i < 4; i++) {
           life.simulate (4);
-          life.print (myfile);
+          print (myfile, life);
         }
         for (int i = 0; i < 4; i++) {
           life.simulate (8);
-          life.print (myfile);
+          print (myfile, life);
         }
         
         myfile.close();
@@ -332,15 +325,11 @@ int main () {
     try {
         cout << "*** Life<ConwayCell> Diehard ***" << endl;
         
-        // read RunLifeConway.in // assume all Conway cells
-        ifstream file;
-        ofstream myfile;
-        file.open ("diehard.in");
-        myfile.open ("diehard.out");
-        int dims[2];
-        dimensions (file, dims);
-
-        Life<ConwayCell> life (dims[0], dims[1], ConwayCell());
+        ifstream file ("diehard.in");
+        ofstream myfile ("diehard.out");
+        int rows, cols;
+        file >> rows >> cols;
+        Life<ConwayCell> life (rows, cols, ConwayCell());
 
         string line;
         size_t row = 0;
@@ -357,15 +346,15 @@ int main () {
         file.close();
 
         myfile << "*** Life<ConwayCell> Diehard ***";
-        life.print (myfile);
+        print (myfile, life);
         for (int i = 0; i < 4; i++) {
           life.simulate (30);
-          life.print (myfile);
+          print (myfile, life);
         }
         life.simulate (6);
         for (int i = 0; i < 5; i++) {
           life.simulate (1);
-          life.print (myfile);
+          print (myfile, life);
         }
         
         myfile.close();
@@ -382,15 +371,11 @@ int main () {
     try {
         cout << "*** Life<FredkinCell> Box ***" << endl;
         
-        // read RunLifeFredkin.in // assume all Fredkin cells
-        ifstream file;
-        ofstream myfile;
-        file.open ("fredkinBox.in");
-        myfile.open ("fredkinBox.out");
-        int dims[2];
-        dimensions (file, dims);
-
-        Life<FredkinCell> life (dims[0], dims[1], FredkinCell());
+        ifstream file ("fredkinBox.in");
+        ofstream myfile ("fredkinBox.out");
+        int rows, cols;
+        file >> rows >> cols;
+        Life<FredkinCell> life (rows, cols, FredkinCell());
 
         string line;
         size_t row = 0;
@@ -407,10 +392,10 @@ int main () {
         file.close();
 
         myfile << "*** Life<FredkinCell> Box ***";
-        life.print (myfile);
+        print (myfile, life);
         for (int i = 0; i < 6; i++) { 
           life.simulate (1);
-          life.print (myfile);
+          print (myfile, life);
         }
         
         myfile.close();
@@ -427,15 +412,11 @@ int main () {
     try {
         cout << "*** Life<FredkinCell> Triangle ***" << endl;
         
-        // read RunLifeFredkin.in // assume all Fredkin cells
-        ifstream file;
-        ofstream myfile;
-        file.open ("fredkinTriangle.in");
-        myfile.open ("fredkinTriangle.out");
-        int dims[2];
-        dimensions (file, dims);
-
-        Life<FredkinCell> life (dims[0], dims[1], FredkinCell());
+        ifstream file ("fredkinTriangle.in");
+        ofstream myfile ("fredkinTriangle.out");
+        int rows, cols;
+        file >> rows >> cols;
+        Life<FredkinCell> life (rows, cols, FredkinCell());
 
         string line;
         size_t row = 0;
@@ -452,10 +433,10 @@ int main () {
         file.close();
 
         myfile << "*** Life<FredkinCell> Triangle ***";
-        life.print (myfile);
+        print (myfile, life);
         for (int i = 0; i < 6; i++) { 
           life.simulate (1);
-          life.print (myfile);
+          print (myfile, life);
         }
         
         myfile.close();
@@ -473,15 +454,11 @@ int main () {
     try {
         cout << "*** Life<FredkinCell> Box ***" << endl;
         
-        // read RunLifeFredkin.in // assume all Fredkin cells
-        ifstream file;
-        ofstream myfile;
-        file.open ("fredkinRings.in");
-        myfile.open ("fredkinRings.out");
-        int dims[2];
-        dimensions (file, dims);
-
-        Life<FredkinCell> life (dims[0], dims[1], FredkinCell());
+        ifstream file ("fredkinRings.in");
+        ofstream myfile ("fredkinRings.out");
+        int rows, cols;
+        file >> rows >> cols;
+        Life<FredkinCell> life (rows, cols, FredkinCell());
 
         string line;
         size_t row = 0;
@@ -498,10 +475,10 @@ int main () {
         file.close();
 
         myfile << "*** Life<FredkinCell> Rings ***";
-        life.print (myfile);
+        print (myfile, life);
         for (int i = 0; i < 6; i++) { 
           life.simulate (1);
-          life.print (myfile);
+          print (myfile, life);
         }
         
         myfile.close();
@@ -518,15 +495,11 @@ int main () {
     try {
         cout << "*** Life<Cell> Box ***" << endl;
         
-        // read RunLife.in // assume all Fredkin cells
-        ifstream file;
-        ofstream myfile;
-        file.open ("fredkinBox.in");
-        myfile.open ("cellBox.out");
-        int dims[2];
-        dimensions (file, dims);
-
-        Life<Cell> life (dims[0], dims[1], new FredkinCell());
+        ifstream file ("fredkinBox.in");
+        ofstream myfile ("cellBox.out");
+        int rows, cols;
+        file >> rows >> cols;
+        Life<Cell> life (rows, cols, new FredkinCell());
 
         string line;
         size_t row = 0;
@@ -543,10 +516,10 @@ int main () {
         file.close();
 
         myfile << "*** Life<Cell> Box ***";
-        life.print (myfile);
+        print (myfile, life);
         for (int i = 0; i < 6; i++) {
           life.simulate (1);
-          life.print (myfile);
+          print (myfile, life);
         }
         myfile.close(); 
         }
@@ -563,15 +536,11 @@ int main () {
     try {
         cout << "*** Life<Cell> Triangle ***" << endl;
         
-        // read RunLife.in // assume all Fredkin cells
-        ifstream file;
-        ofstream myfile;
-        file.open ("fredkinTriangle.in");
-        myfile.open ("cellTriangle.out");
-        int dims[2];
-        dimensions (file, dims);
-
-        Life<Cell> life (dims[0], dims[1], new FredkinCell());
+        ifstream file ("fredkinTriangle.in");
+        ofstream myfile ("cellTriangle.out");
+        int rows, cols;
+        file >> rows >> cols;
+        Life<Cell> life (rows, cols, new FredkinCell());
 
         string line;
         size_t row = 0;
@@ -588,10 +557,10 @@ int main () {
         file.close();
 
         myfile << "*** Life<Cell> Triangle ***";
-        life.print (myfile);
+        print (myfile, life);
         for (int i = 0; i < 6; i++) {
           life.simulate (1);
-          life.print (myfile);
+          print (myfile, life);
         }
         myfile.close(); 
         }
@@ -608,15 +577,11 @@ int main () {
     try {
         cout << "*** Life<Cell> Rings ***" << endl;
         
-        // read RunLife.in // assume all Fredkin cells
-        ifstream file;
-        ofstream myfile;
-        file.open ("fredkinRings.in");
-        myfile.open ("cellRings.out");
-        int dims[2];
-        dimensions (file, dims);
-
-        Life<Cell> life (dims[0], dims[1], new FredkinCell());
+        ifstream file ("fredkinRings.in");
+        ofstream myfile ("cellRings.out");
+        int rows, cols;
+        file >> rows >> cols;
+        Life<Cell> life (rows, cols, new FredkinCell());
 
         string line;
         size_t row = 0;
@@ -633,10 +598,10 @@ int main () {
         file.close();
 
         myfile << "*** Life<Cell> Rings ***";
-        life.print (myfile);
+        print (myfile, life);
         for (int i = 0; i < 6; i++) {
           life.simulate (1);
-          life.print (myfile);
+          print (myfile, life);
         }
         myfile.close(); 
         }
