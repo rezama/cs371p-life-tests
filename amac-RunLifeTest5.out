@@ -1,0 +1,37 @@
+*** Life<ConwayCell> 4x4 ***
+
+Generation = 0, Population = 8.
+*..*
+*..*
+*..*
+*..*
+
+Generation = 1, Population = 8.
+....
+****
+****
+....
+
+Generation = 2, Population = 8.
+.**.
+*..*
+*..*
+.**.
+
+Generation = 3, Population = 8.
+.**.
+*..*
+*..*
+.**.
+
+Generation = 4, Population = 8.
+.**.
+*..*
+*..*
+.**.
+
+Generation = 5, Population = 8.
+.**.
+*..*
+*..*
+.**.
