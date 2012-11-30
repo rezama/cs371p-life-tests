@@ -1,0 +1,113 @@
+*** Life<Cell> 5x5 ***
+
+Generation = 0, Population = 5.
+-----
+-----
+*****
+-----
+-----
+
+Generation = 1, Population = 13.
+-----
+00000
+.***.
+00000
+-----
+
+Generation = 2, Population = 20.
+00000
+11111
+.....
+11111
+00000
+
+Generation = 3, Population = 12.
+-111-
+-***-
+.....
+-***-
+-111-
+
+Generation = 4, Population = 14.
+0-*-0
+1*.*1
+.....
+1*.*1
+0-*-0
+
+Generation = 5, Population = 16.
+11*11
+-***-
+.....
+-***-
+11*11
+
+Generation = 6, Population = 8.
+**.**
+-...-
+.....
+-...-
+**.**
+
+Generation = 7, Population = 4.
+.....
+1...1
+.....
+1...1
+.....
+
+Generation = 8, Population = 0.
+.....
+-...-
+.....
+-...-
+.....
+
+Generation = 9, Population = 0.
+.....
+-...-
+.....
+-...-
+.....
+
+Generation = 10, Population = 0.
+.....
+-...-
+.....
+-...-
+.....
+
+Generation = 11, Population = 0.
+.....
+-...-
+.....
+-...-
+.....
+
+Generation = 12, Population = 0.
+.....
+-...-
+.....
+-...-
+.....
+
+Generation = 13, Population = 0.
+.....
+-...-
+.....
+-...-
+.....
+
+Generation = 14, Population = 0.
+.....
+-...-
+.....
+-...-
+.....
+
+Generation = 15, Population = 0.
+.....
+-...-
+.....
+-...-
+.....

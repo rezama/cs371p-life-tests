@@ -1,0 +1,37 @@
+*** Life<FredkinCell> 5x5 ***
+
+Generation = 0, Population = 9.
+-000-
+-----
+-000-
+-----
+-000-
+
+Generation = 1, Population = 12.
+01-10
+-----
+01-10
+-----
+01-10
+
+Generation = 2, Population = 12.
+12-21
+-----
+12-21
+-----
+12-21
+
+Generation = 3, Population = 12.
+23-32
+-----
+23-32
+-----
+23-32
+
+Generation = 13, Population = 12.
+++-++
+-----
+++-++
+-----
+++-++
+
