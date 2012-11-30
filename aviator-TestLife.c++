@@ -142,8 +142,7 @@ struct TestLife : CppUnit::TestFixture {
   // ----------------
 
   void test_c_1() {
-    FredkinCell fc;
-    Cell c(&fc);
+    Cell c;
     CPPUNIT_ASSERT(c.alive() == false);
     CPPUNIT_ASSERT(c.character() == '-');
     c.make_alive();
@@ -162,7 +161,7 @@ struct TestLife : CppUnit::TestFixture {
 
   void test_c_2() {
     FredkinCell fc(false);
-    Cell c(&fc);
+    Cell c(fc.clone());
     CPPUNIT_ASSERT(c.alive() == false);
     CPPUNIT_ASSERT(c.character() == '-');
     c.make_alive();
@@ -190,7 +189,7 @@ struct TestLife : CppUnit::TestFixture {
 
   void test_c_3() {
     FredkinCell fc(true);
-    Cell c(&fc);
+    Cell c(fc.clone());
     CPPUNIT_ASSERT(c.alive() == true);
     CPPUNIT_ASSERT(c.character() == '0');
     c.make_alive();
