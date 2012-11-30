@@ -471,11 +471,25 @@ struct TestConwayCell : CppUnit::TestFixture {
     // test_constructor
     // ----------------
 
-    void test_ctor() {
+    void test_ctor_1() {
         ConwayCell c;
 
         ASSERT(c.getLivingNeighborCount() == 0);
         ASSERT(c.isAlive() == false);
+    }
+
+    void test_ctor_2() {
+        ConwayCell c(false);
+
+        ASSERT(c.getLivingNeighborCount() == 0);
+        ASSERT(c.isAlive() == false);
+    }
+
+    void test_ctor_3() {
+        ConwayCell c(true);
+
+        ASSERT(c.getLivingNeighborCount() == 0);
+        ASSERT(c.isAlive() == true);
     }
 
     // --------------
@@ -767,7 +781,9 @@ struct TestConwayCell : CppUnit::TestFixture {
     // -----
 
     CPPUNIT_TEST_SUITE(TestConwayCell);
-        CPPUNIT_TEST(test_ctor);
+        CPPUNIT_TEST(test_ctor_1);
+        CPPUNIT_TEST(test_ctor_2);
+        CPPUNIT_TEST(test_ctor_3);
 
         CPPUNIT_TEST(test_getSymbol_1);
         CPPUNIT_TEST(test_getSymbol_2);
@@ -955,20 +971,138 @@ struct TestCell : CppUnit::TestFixture {
     // test_constructor
     // ----------------
 
-    void test_ctor() {
-        // TODO
+    void test_ctor_1() {
+        AbstractCell *p = new ConwayCell(true);
+        Cell c(p);
+        ASSERT(c.isAlive() == true);
+        ASSERT(c.getSymbol() == '*');
+
+        p = new FredkinCell(true, 2);
+        Cell f(p);
+        ASSERT(f.isAlive() == true);
+        ASSERT(f.getSymbol() == '2');
     }
+
+    void test_ctor_2() {
+        Cell a;
+        ASSERT(a.isAlive() == false);
+        ASSERT(a.getSymbol() == '.');
+
+        Cell c(true);
+        ASSERT(c.isAlive());
+        ASSERT(c.getSymbol() == '*');
+
+        Cell d(false);
+        ASSERT(a.isAlive() == false);
+        ASSERT(a.getSymbol() == '.');
+    }
+
+    void test_ctor_3() {
+        Cell a('.');
+        ASSERT(!a.isAlive());
+
+        Cell b('*');
+        ASSERT(b.isAlive());
+
+        Cell c('-');
+        ASSERT(!c.isAlive());
+
+        Cell d('4');
+        ASSERT(d.isAlive());
+
+        Cell e('+');
+        ASSERT(e.isAlive());
+    }
+
+    // ------------
+    // test_isAlive
+    // ------------
+
+    /* tests implied by test_ctor */
+
+    // --------------
+    // test_getSymbol
+    // --------------
+
+    /* tests implied by test_ctor */
+
+    // -----------
+    // test_evolve
+    // -----------
+
+    void test_evolve_1() {
+        Cell a('.');
+        ASSERT(!a.isAlive());
+        a.setLivingNeighborCount(3);
+        a.evolve();
+        ASSERT(a.isAlive());
+    }
+
+    void test_evolve_2() {
+        Cell a('*');
+        ASSERT(a.isAlive());
+        a.setLivingNeighborCount(3);
+        a.evolve();
+        ASSERT(a.isAlive());
+    }
+
+    void test_evolve_3() {
+        Cell a('-');
+        ASSERT(!a.isAlive());
+        a.setLivingNeighborCount(2);
+        a.evolve();
+        ASSERT(!a.isAlive());
+    }
+
+    void test_evolve_4() {
+        Cell a('0');
+        ASSERT(a.isAlive());
+        a.setLivingNeighborCount(3);
+        a.evolve();
+        ASSERT(a.isAlive());
+        ASSERT(a.getSymbol() == '1');
+    }
+
+    void test_evolve_5() {
+        Cell a('1');
+        ASSERT(a.isAlive());
+        a.setLivingNeighborCount(3);
+        a.evolve();
+        ASSERT(a.isAlive());
+        ASSERT(a.getSymbol() == '*');
+    }
+
+
+    // ---------------------------
+    // test_setLivingNeighborCount
+    // ---------------------------
+
+    /* test implied by tests of subclasses */
+
+    // --------------------
+    // test_processNeighbor
+    // --------------------
+
+    /* test implied by tests of subclasses */
 
     // -----
     // suite
     // -----
 
     CPPUNIT_TEST_SUITE(TestCell);
-//        CPPUNIT_TEST(test_ctor);
+        CPPUNIT_TEST(test_ctor_1);
+        CPPUNIT_TEST(test_ctor_2);
+        CPPUNIT_TEST(test_ctor_3);
+
+        CPPUNIT_TEST(test_evolve_1);
+        CPPUNIT_TEST(test_evolve_2);
+        CPPUNIT_TEST(test_evolve_3);
+        CPPUNIT_TEST(test_evolve_4);
+        CPPUNIT_TEST(test_evolve_5);
     CPPUNIT_TEST_SUITE_END();
 };
 
-struct TestLifeConway : CppUnit::TestFixture {
+struct TestLife : CppUnit::TestFixture {
     // ----------------
     // test_constructor
     // ----------------
@@ -1313,7 +1447,7 @@ struct TestLifeConway : CppUnit::TestFixture {
     // suite
     // -----
 
-    CPPUNIT_TEST_SUITE(TestLifeConway);
+    CPPUNIT_TEST_SUITE(TestLife);
         CPPUNIT_TEST(test_ctor_1);
         CPPUNIT_TEST(test_ctor_2);
         CPPUNIT_TEST(test_ctor_3);
@@ -1354,7 +1488,7 @@ int main() {
         tr.addTest(TestConwayCell::suite());
         tr.addTest(TestFredkinCell::suite());
         tr.addTest(TestCell::suite());
-        tr.addTest(TestLifeConway::suite());
+        tr.addTest(TestLife::suite());
         tr.run();
     } catch (exception& e) {
         cout << e.what() << endl;

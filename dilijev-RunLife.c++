@@ -80,6 +80,78 @@ int main () {
         assert(false);
     }
 
+    try {
+        ifstream in("RunLifeConway1.in", ifstream::in);
+        ofstream out("RunLifeConway1.out", ofstream::out);
+
+        out << "*** [1] Life<ConwayCell> 5x5 Blinker ***" << endl;
+
+        Life<Cell> life(in);
+        life.display(out);
+        for (int i = 0; i < 5; ++i) {
+            life.evolve();
+            life.display(out);
+        }
+    } catch (const invalid_argument&) {
+        assert(false);
+    } catch (const out_of_range&) {
+        assert(false);
+    }
+
+    try {
+        ifstream in("RunLifeConway2.in", ifstream::in);
+        ofstream out("RunLifeConway2.out", ofstream::out);
+
+        out << "*** [2] Life<ConwayCell> 3x3 Dying Cell ***" << endl;
+
+        Life<Cell> life(in);
+        life.display(out);
+        for (int i = 0; i < 5; ++i) {
+            life.evolve();
+            life.display(out);
+        }
+    } catch (const invalid_argument&) {
+        assert(false);
+    } catch (const out_of_range&) {
+        assert(false);
+    }
+
+    try {
+        ifstream in("RunLifeConway3.in", ifstream::in);
+        ofstream out("RunLifeConway3.out", ofstream::out);
+
+        out << "*** [3] Life<ConwayCell> 3x3 nothing ***" << endl;
+
+        Life<Cell> life(in);
+        life.display(out);
+        for (int i = 0; i < 5; ++i) {
+            life.evolve();
+            life.display(out);
+        }
+    } catch (const invalid_argument&) {
+        assert(false);
+    } catch (const out_of_range&) {
+        assert(false);
+    }
+
+    try {
+        ifstream in("RunLifeConway4.in", ifstream::in);
+        ofstream out("RunLifeConway4.out", ofstream::out);
+
+        out << "*** [4] Life<ConwayCell> 4x4 to stable square ***" << endl;
+
+        Life<Cell> life(in);
+        life.display(out);
+        for (int i = 0; i < 5; ++i) {
+            life.evolve();
+            life.display(out);
+        }
+    } catch (const invalid_argument&) {
+        assert(false);
+    } catch (const out_of_range&) {
+        assert(false);
+    }
+
     // ------------------
     // Fredkin Cell 20x20
     // ------------------
@@ -109,6 +181,60 @@ int main () {
         assert(false);
     }
 
+    try {
+        ifstream in("RunLifeFredkin1.in", ifstream::in);
+        ofstream out("RunLifeFredkin1.out", ofstream::out);
+
+        out << "*** [1] Life<FredkinCell> 16x16 square ***" << endl;
+
+        Life<FredkinCell> life(in);
+        life.display(out);
+        for (int i = 0; i < 5; ++i) {
+            life.evolve();
+            life.display(out);
+        }
+    } catch (const invalid_argument&) {
+        assert(false);
+    } catch (const out_of_range&) {
+        assert(false);
+    }
+
+    try {
+        ifstream in("RunLifeFredkin2.in", ifstream::in);
+        ofstream out("RunLifeFredkin2.out", ofstream::out);
+
+        out << "*** [2] Life<FredkinCell> 16x16 squares ***" << endl;
+
+        Life<FredkinCell> life(in);
+        life.display(out);
+        for (int i = 0; i < 5; ++i) {
+            life.evolve();
+            life.display(out);
+        }
+    } catch (const invalid_argument&) {
+        assert(false);
+    } catch (const out_of_range&) {
+        assert(false);
+    }
+
+    try {
+        ifstream in("RunLifeFredkin3.in", ifstream::in);
+        ofstream out("RunLifeFredkin3.out", ofstream::out);
+
+        out << "*** [3] Life<FredkinCell> 16x16 aged squares ***" << endl;
+
+        Life<FredkinCell> life(in);
+        life.display(out);
+        for (int i = 0; i < 5; ++i) {
+            life.evolve();
+            life.display(out);
+        }
+    } catch (const invalid_argument&) {
+        assert(false);
+    } catch (const out_of_range&) {
+        assert(false);
+    }
+
     // ----------
     // Cell 20x20
     // ----------
@@ -125,6 +251,61 @@ int main () {
         ofstream out("RunLife.out", ofstream::out);
 
         out << "*** Life<Cell> 20x20 ***" << endl;
+
+        Life<Cell> life(in);
+        life.display(out);
+        for (int i = 0; i < 5; ++i) {
+            life.evolve();
+            life.display(out);
+        }
+    } catch (const invalid_argument&) {
+        assert(false);
+    } catch (const out_of_range&) {
+        assert(false);
+    }
+
+
+    try {
+        ifstream in("RunLife1.in", ifstream::in);
+        ofstream out("RunLife1.out", ofstream::out);
+
+        out << "*** [1] Life<Cell> 16x16 square ***" << endl;
+
+        Life<Cell> life(in);
+        life.display(out);
+        for (int i = 0; i < 5; ++i) {
+            life.evolve();
+            life.display(out);
+        }
+    } catch (const invalid_argument&) {
+        assert(false);
+    } catch (const out_of_range&) {
+        assert(false);
+    }
+
+    try {
+        ifstream in("RunLife2.in", ifstream::in);
+        ofstream out("RunLife2.out", ofstream::out);
+
+        out << "*** [2] Life<Cell> 16x16 squares ***" << endl;
+
+        Life<Cell> life(in);
+        life.display(out);
+        for (int i = 0; i < 5; ++i) {
+            life.evolve();
+            life.display(out);
+        }
+    } catch (const invalid_argument&) {
+        assert(false);
+    } catch (const out_of_range&) {
+        assert(false);
+    }
+
+    try {
+        ifstream in("RunLife3.in", ifstream::in);
+        ofstream out("RunLife3.out", ofstream::out);
+
+        out << "*** [3] Life<Cell> 16x16 aged squares ***" << endl;
 
         Life<Cell> life(in);
         life.display(out);
